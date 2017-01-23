@@ -6,4 +6,4 @@ from openmrs.credentials.models import OpenmrsInstance
 class OpenmrsConcept(models.Model):
     instance = models.ForeignKey(OpenmrsInstance)
     display = models.TextField()
-    uuid = models.CharField()
+    uuid = models.CharField(max_length=256)
