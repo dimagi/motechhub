@@ -1,8 +1,12 @@
-from copy import deepcopy
 import json
-from django.http import StreamingHttpResponse
-import itertools
+from django.db.models import Q
+from django.http import StreamingHttpResponse, HttpResponse
+from django.shortcuts import render
+from openmrs.concepts.models import OpenmrsConcept
+from openmrs.concepts.sync import openmrs_concept_json_from_api_json, \
+    openmrs_concept_json_with_answers_from_concept
 from openmrs.credentials.dbaccessors import get_credential
+from openmrs.credentials.models import OpenmrsInstance
 from openmrs.restclient.listapi import OpenmrsListApi
 
 
@@ -10,34 +14,29 @@ def all_openmrs_concepts(request, domain, credential_id):
     credential = get_credential(domain, int(credential_id))
     restclient = OpenmrsListApi(credential, 'concept')
 
-    all_keys = set()
-
-    def format_concept(concept):
-        formatted_concept = deepcopy(concept)
-        formatted_concept['conceptClass'] = concept['conceptClass']['display']
-        formatted_concept['datatype'] = concept['datatype']['display']
-        formatted_concept['descriptions'] = [description['display']
-                                             for description in concept['descriptions']]
-        formatted_concept['names'] = [{'display': name['display'], 'locale': name['locale']}
-                                      for name in concept['names']]
-        formatted_concept['answers'] = [answer['uuid']
-                                        for answer in concept['answers']]
-        del formatted_concept['name']
-        del formatted_concept['auditInfo']
-        del formatted_concept['links']
-        del formatted_concept['version']
-        del formatted_concept['resourceVersion']
-        del formatted_concept['mappings']
-        del formatted_concept['setMembers']
-        new_keys = set(formatted_concept.keys()) - all_keys
-        if new_keys:
-            print new_keys
-        all_keys.update(formatted_concept.keys())
-        return formatted_concept
-    lines = (json.dumps(format_concept(concept)) + '\n'
+    lines = (json.dumps(openmrs_concept_json_from_api_json(concept).to_json()) + '\n'
              for concept in restclient.get_all())
-    all_lines = itertools.chain(['[\n'], lines, [']\n'])
-    return StreamingHttpResponse(
-        all_lines,
-        content_type='text/json'
-    )
+    return StreamingHttpResponse(lines, content_type='text/json')
+
+
+def concept_search(request, domain):
+    search = request.GET.get('q') or ''
+    if len(search) > 2:
+        instance = OpenmrsInstance.objects.get(domain=domain)
+        all_openmrs_concepts = OpenmrsConcept.objects.filter(Q(instance=instance) & ~Q(answers=None))
+        openmrs_concepts = all_openmrs_concepts.filter(names__icontains=search)
+        first_50 = openmrs_concepts[:50]
+        return HttpResponse(
+            json.dumps([
+                openmrs_concept_json_with_answers_from_concept(concept).to_json()
+                for concept in first_50
+            ])
+        )
+    else:
+        return HttpResponse(json.dumps([]), content_type='text/json')
+
+
+def concept_search_page(request, domain):
+    return render(request, 'openmrs/concepts/concept_search.html', {
+        'domain': domain,
+    })
