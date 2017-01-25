@@ -32,12 +32,11 @@ class OpenmrsListApi(object):
             self._make_url(),
             params={'startIndex': start_index, 'v': 'full'},
         ).json()
-        if 'links' in response:
-            next_url, = [link['uri'] for link in response['links']
-                         if link['rel'] == 'next']
+        next_url, = [link['uri'] for link in response['links']
+                     if link['rel'] == 'next'] or [None]
+        if next_url:
             return ApiResponse(response['results'], self._get_next_start_index(next_url))
         else:
-            print response
             return ApiResponse(response['results'], None)
 
     def get_all(self):

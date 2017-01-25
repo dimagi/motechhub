@@ -1,4 +1,5 @@
 import json
+from django.db import IntegrityError
 import jsonobject
 from openmrs.concepts.models import OpenmrsConcept
 from openmrs.restclient.listapi import OpenmrsListApi
@@ -6,10 +7,28 @@ from openmrs.restclient.listapi import OpenmrsListApi
 
 def sync_concepts_from_openmrs(credentials):
     api = OpenmrsListApi(credentials, 'concept')
+    answers_relationships = []
     for concept in api.get_all():
         concept = openmrs_concept_json_from_api_json(concept)
-        concept = openmrs_concept_from_concept_json(credentials.instance, concept)
+        concept, answers = openmrs_concept_from_concept_json(credentials.instance, concept)
+        if answers:
+            answers_relationships.append((concept, answers))
         concept.save()
+
+    while answers_relationships:
+        delayed = []
+        for concept, answers in answers_relationships:
+            print answers
+            try:
+                concept.answers = answers
+            except IntegrityError:
+                delayed.append((concept, answers))
+            else:
+                concept.save()
+        if len(answers_relationships) == len(delayed):
+            # this is going to be an infinite loop
+            raise Exception(delayed)
+        answers_relationships = delayed
 
 
 class OpenmrsConceptJSON(jsonobject.JsonObject):
@@ -42,7 +61,8 @@ def openmrs_concept_json_from_api_json(api_json):
         concept_class=api_json['conceptClass']['display'],
         retired=api_json['retired'],
         datatype=api_json['datatype']['display'],
-        answers=[answer['uuid'] for answer in api_json['answers']],
+        answers=[answer['uuid'] for answer in api_json['answers']
+                 if '/drug/' not in ''.join(link['uri'] for link in answer['links'])],
         descriptions=[description['display']
                       for description in api_json['descriptions']],
         names=[OpenmrsConceptName(display=name['display'], locale=name['locale'])
@@ -53,17 +73,16 @@ def openmrs_concept_json_from_api_json(api_json):
 
 
 def openmrs_concept_from_concept_json(instance, concept_json):
-    return OpenmrsConcept(
+    return (OpenmrsConcept(
         instance=instance,
         uuid=concept_json.uuid,
         display=concept_json.display,
         concept_class=concept_json.concept_class,
         retired=concept_json.retired,
         datatype=concept_json.datatype,
-        answers=concept_json.answers,
         descriptions=json.dumps(concept_json.descriptions),
         names=json.dumps([name.to_json() for name in concept_json.names]),
-    )
+    ), concept_json.answers)
 
 
 def openmrs_concept_json_with_answers_from_concept(concept):
