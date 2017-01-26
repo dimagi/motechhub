@@ -1,11 +1,11 @@
-from collections import namedtuple
 from urlparse import urlparse, parse_qs
+
 from openmrs.restclient.openmrs_requests import OpenmrsRequests
 
-ApiResponse = namedtuple('ApiResponse', 'results next_index')
+from utils.restclient.listapi import ListApi, ApiResponse
 
 
-class OpenmrsListApi(object):
+class OpenmrsListApi(ListApi):
     def __init__(self, credential, api_name):
         assert api_name in ['concept']
         self.instance = credential.instance
@@ -38,10 +38,3 @@ class OpenmrsListApi(object):
             return ApiResponse(response['results'], self._get_next_start_index(next_url))
         else:
             return ApiResponse(response['results'], None)
-
-    def get_all(self):
-        start_index = 0
-        while start_index is not None:
-            results, start_index = self.get_list(start_index)
-            for obj in results:
-                yield obj

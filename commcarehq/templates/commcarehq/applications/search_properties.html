@@ -1,0 +1,39 @@
+{% load staticfiles %}
+<head>
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'lodash/dist/lodash.min.js' %}"></script>
+    <script src="{% static 'knockout/dist/knockout.js' %}"></script>
+    <script>
+        $(function () {
+            function CasePropertySearchViewModel() {
+                var self = {};
+                self.allCaseSpecs = ko.observableArray();
+                self.caseTypes = ko.computed(function () {
+                    return _.map(self.allCaseSpecs(), _.iteratee('caseType'));
+                });
+                self.selectedCaseSpec = ko.observable();
+                self.init = function () {
+                    return $.getJSON("{% url 'known_case_properties' domain %}").done(function (data) {
+                        self.allCaseSpecs(data);
+                    });
+                };
+                _.delay(self.init);
+                return self;
+            }
+            // global
+            model = CasePropertySearchViewModel();
+            ko.applyBindings(
+                    model,
+                    $("#propertySearch").get(0));
+        });
+    </script>
+</head>
+<body>
+<div id="propertySearch">
+    <select data-bind="options: allCaseSpecs, optionsText: 'caseType', value: selectedCaseSpec"></select>
+
+    <!--ko if: selectedCaseSpec()-->
+    <select data-bind="options: selectedCaseSpec().properties"></select>
+    <!--/ko-->
+</div>
+</body>

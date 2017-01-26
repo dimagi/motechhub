@@ -18,6 +18,7 @@ from django.contrib import admin
 
 domain_urlspatterns = [
     url(r'^openmrs/', include('openmrs.urls')),
+    url(r'^commcarehq/', include('commcarehq.urls')),
 ]
 
 urlpatterns = [
