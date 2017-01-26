@@ -7,7 +7,7 @@ from utils.restclient.listapi import ListApi, ApiResponse
 
 class OpenmrsListApi(ListApi):
     def __init__(self, credential, api_name):
-        assert api_name in ['concept']
+        assert api_name in ['concept', 'patientidentifiertype']
         self.instance = credential.instance
         self.credential = credential
         self.api_name = api_name
@@ -32,7 +32,7 @@ class OpenmrsListApi(ListApi):
             self._make_url(),
             params={'startIndex': start_index, 'v': 'full'},
         ).json()
-        next_url, = [link['uri'] for link in response['links']
+        next_url, = [link['uri'] for link in response.get('links', [])
                      if link['rel'] == 'next'] or [None]
         if next_url:
             return ApiResponse(response['results'], self._get_next_start_index(next_url))
