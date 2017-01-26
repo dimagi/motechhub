@@ -21,8 +21,19 @@ def all_openmrs_concepts(request, domain, credential_id):
 
 def concept_search(request, domain):
     search = request.GET.get('q') or ''
-    if len(search) > 2:
-        instance = OpenmrsInstance.objects.get(domain=domain)
+    uuid = request.GET.get('uuid')
+    instance = OpenmrsInstance.objects.get(domain=domain)
+    if uuid:
+        try:
+            concept = OpenmrsConcept.objects.get(uuid=uuid, instance=instance)
+        except OpenmrsConcept.DoesNotExist:
+            return HttpResponse(json.dumps([]), content_type='text/json')
+        else:
+            return HttpResponse(
+                json.dumps([
+                    openmrs_concept_json_with_answers_from_concept(concept).to_json()
+                ]), content_type='text/json')
+    elif len(search) > 2:
         all_openmrs_concepts = OpenmrsConcept.objects.filter(Q(instance=instance) & ~Q(answers=None))
         openmrs_concepts = all_openmrs_concepts.filter(names__icontains=search)
         first_50 = openmrs_concepts[:50]
@@ -30,7 +41,7 @@ def concept_search(request, domain):
             json.dumps([
                 openmrs_concept_json_with_answers_from_concept(concept).to_json()
                 for concept in first_50
-            ])
+            ], content_type='text/json')
         )
     else:
         return HttpResponse(json.dumps([]), content_type='text/json')
