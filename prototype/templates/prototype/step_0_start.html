@@ -1,0 +1,17 @@
+{% extends 'prototype/base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <h1>Select a Trigger</h1>
+    <div class="row">
+        <div class="col-xs-6 col-md-3">
+            <a href="{% url 'prototype_trigger_commcarehq' domain %}" class="thumbnail">
+                <img src="{% static 'prototype/img/commcarehq.png' %}" alt="CommCare HQ"/>
+            </a>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <a href="#" class="thumbnail">
+                <img src="{% static 'prototype/img/openmrs.png' %}" alt="OpenMRS"/>
+            </a>
+        </div>
+    </div>
+{% endblock %}

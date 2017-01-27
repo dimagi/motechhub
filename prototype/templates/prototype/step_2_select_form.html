@@ -1,0 +1,68 @@
+{% extends 'prototype/base.html' %}
+{% load staticfiles %}
+{% block sidebar %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Trigger: CommCare HQ</h3>
+        </div>
+        <div class="panel-body">
+            <img class="pull-left" src="{% static 'prototype/img/commcarehq-small.png' %}" alt="CommCare HQ"/>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item"><strong>When</strong>: A new form is submitted</li>
+        </ul>
+    </div>
+
+{% endblock %}
+{% block content %}
+<div id="koSelectForm">
+    <h1>Which form?</h1>
+
+    <div class="form-group">
+        <label>Application</label>
+        <select class="form-control" data-bind="
+            options: applications,
+            optionsText: 'name',
+            optionsCaption: 'Select an application...',
+            value: selectedApplication
+        "></select>
+    </div>
+    <!--ko if: selectedApplication()-->
+    <div class="form-group">
+        <label>Form</label>
+        <select class="form-control" data-bind="
+            options: applicationForms,
+            optionsText: function (f) { return f.name.en; } ">
+        </select>
+    </div>
+    <!--/ko-->
+    <a class="btn btn-success" href="{% url 'prototype_select_action' domain %}">Continue</a>
+</div>
+{% endblock %}
+
+
+{% block js-inline %}
+<script>
+    $(function () {
+        var viewModel;
+        $.getJSON("{% url 'commcarehq_applications' domain %}").done(function (data) {
+            viewModel.applications(data);
+        });
+        function SelectFormViewModel() {
+            var self = {};
+            self.applications = ko.observableArray();
+            self.selectedApplication = ko.observable();
+            self.applicationForms = ko.observableArray();
+            self.selectedApplication.subscribe(function () {
+                $.getJSON("{% url 'commcarehq_application_forms' domain '___' %}"
+                          .replace('___', self.selectedApplication().app_id)).done(function (data) {
+                    self.applicationForms(data);
+                });
+            });
+            return self;
+        }
+        viewModel = SelectFormViewModel();
+        ko.applyBindings(viewModel, $('#koSelectForm').get(0));
+    });
+</script>
+{% endblock %}

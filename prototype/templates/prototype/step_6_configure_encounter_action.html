@@ -1,0 +1,256 @@
+{% extends 'prototype/base.html' %}
+{% load staticfiles %}
+{% block sidebar %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Trigger: CommCare HQ</h3>
+        </div>
+        <div class="panel-body">
+            <img class="pull-left" src="{% static 'prototype/img/commcarehq-small.png' %}" alt="CommCare HQ"/>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item"><strong>When</strong>: A new form is submitted</li>
+            <li class="list-group-item"><strong>Application</strong>: Educador de Saude 2.0</li>
+            <li class="list-group-item"><strong>Form</strong>: First Visit</li>
+        </ul>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Action: OpenMRS</h3>
+        </div>
+        <div class="panel-body">
+            <img src="{% static 'prototype/img/openmrs-small.png' %}" alt="CommCare HQ"/>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item">Create an Encounter</li>
+            <li class="list-group-item"><strong>Encounter Type</strong>: S.TARV: BUSCA ACTIVA</li>
+            <li class="list-group-item"><strong>Form</strong>: TARV: VISITA DOMICILIARIA</li>
+        </ul>
+    </div>
+
+{% endblock %}
+{% block content %}
+    <h1>Configure the Encounter</h1>
+
+    <form class="form-horizontal">
+{#        <div class="form-group">#}
+{#            <label for="encounterDate" class="col-sm-2 control-label">Encounter Date</label>#}
+{#            <div class="col-sm-10">#}
+{#                <input type="text" class="form-control" id="encounterDate">#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="form-group">#}
+{#            <label for="location" class="col-sm-2 control-label">Location</label>#}
+{#            <div class="col-sm-10">#}
+{#                <input type="text" class="form-control" id="location">#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="form-group">#}
+{#            <label for="patient" class="col-sm-2 control-label">Patient (UUID)</label>#}
+{#            <div class="col-sm-10">#}
+{#                <input type="text" class="form-control" id="patient">#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="form-group">#}
+{#            <label for="provider" class="col-sm-2 control-label">Provider (UUID)</label>#}
+{#            <div class="col-sm-10">#}
+{#                <input type="text" class="form-control" id="provider">#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="form-group">#}
+{#            <label for="patient" class="col-sm-2 control-label">Patient (UUID)</label>#}
+{#            <div class="col-sm-10">#}
+{#                <input type="text" class="form-control" id="patient">#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="form-group">#}
+{#            <label for="visit" class="col-sm-2 control-label">Visit (UUID)</label>#}
+{#            <div class="col-sm-10">#}
+{#                <input type="text" class="form-control" id="visit">#}
+{#            </div>#}
+{#        </div>#}
+
+        <div class="form-group">
+            <label for="observations" class="col-sm-2 control-label">Observations</label>
+            <div class="col-sm-10" id="koObservations">
+                <select class='select2 form-control' data-bind="
+                    options: concepts,
+                    optionsText: 'display',
+                    value: newConcept,
+                    optionsCaption: 'Select a concept to add...',
+                    event: {change: addObservation}
+                "></select>
+                <table class="table" data-bind="if: observations().length">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Concept</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--ko foreach: observations-->
+                        <tr>
+                            <td>
+                                <a href="#" data-bind="click: $root.removeObservation"><i class="glyphicon glyphicon-remove"></i></a>
+                            </td>
+                            <td>
+                                <span data-bind="text: concept.display"></span>
+                                <small class="help-block" data-bind="text: concept.uuid"></small>
+                            </td>
+                            <td>
+                                <!--ko if: concept.datatype == 'Coded'-->
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" data-bind="checked: allowsMultipleAnswers"/>
+                                        Allows multiple answers
+                                    </label>
+                                </div>
+                                <!--/ko-->
+                                <!--ko if: !allowsMultipleAnswers()-->
+                                    <!--ko template: {name: 'commcarehqFormQuestions', data: $data}--><!--/ko-->
+                                <!--/ko-->
+                            </td>
+                        </tr>
+                        <!--ko if: concept.datatype == 'Coded'-->
+                        <tr>
+                            <td></td>
+                            <td colspan="2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">Corresponding answers</div>
+                                    <table class="table">
+                                        <tbody data-bind="foreach: answers">
+                                            <tr>
+                                                <td class="col-md-4">
+                                                    <span data-bind="text: answerConcept.display"></span>
+                                                </td>
+                                                <td class="col-md-4">
+                                                    <!--ko if: $parent.allowsMultipleAnswers-->
+                                                        <!--ko template: {name: 'commcarehqFormQuestions', data: {source: answerSource}}--><!--/ko-->
+                                                    <!--/ko-->
+                                                </td>
+                                                <td class="col-md-4">
+                                                    <!--ko if: source() && source().options-->
+                                                    <select class="form-control" data-bind="
+                                                        options: $parent.source().options,
+                                                        optionsText: function (o) { return o.translations.en; }
+                                                        optionsCaption: '[Question not filled]'
+                                                    "></select>
+                                                    <!--/ko-->
+                                                    <!--ko if: source() && !source().options-->
+                                                    <input type="text" class="form-control" placeholder="Matching value">
+                                                    <!--/ko-->
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                            </td>
+                        </tr>
+                        <!--/ko-->
+                        <!--/ko-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-success">Continue</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block js-inline %}
+
+<script type="text/html" id="commcarehqFormQuestions">
+    <select class="select2 form-control" data-bind="
+        options: $root.commcarehqFormQuestions,
+        optionsText: function (q) {return q.translations.en || q.hashtagValue},
+        optionsCaption: 'Select a source',
+        value: source
+    "></select>
+    <span data-bind="if: source()">
+        <small class="help-block" data-bind="text: source().hashtagValue"></small>
+        <!--ko if: source().tag === 'hidden'-->
+        <small class="help-block">
+            <strong>Calculate</strong>:
+            <span data-bind="text: $root.formatCalculate(source().calculate)"></span>
+        </small>
+        <!--/ko-->
+    </span>
+</script>
+<script>
+    $(function () {
+        var concepts = {% include 'prototype/fixturedata/observations.json' %};
+        var select2Nodes = [];
+        $('body').on('DOMNodeInserted', 'select.select2', function () {
+            if (!_.includes(select2Nodes, this)) {
+                $(this).select2();
+                select2Nodes.push(this);
+            }
+        });
+
+        function ObservationsViewModel() {
+            var self = {};
+            self.commcarehqFormQuestions = ko.observableArray();
+            self.concepts = concepts;
+            self.newConcept = ko.observable();
+            self.observations = ko.observableArray();
+            self.addObservation = function () {
+                if (self.newConcept()) {
+                    var observation = {
+                        concept: self.newConcept(),
+                        source: ko.observable(),
+                        allowsMultipleAnswers: ko.observable(false),
+                    };
+                    observation.answers = self.initAnswersForConcept(observation, self.newConcept());
+                    self.observations.push(observation);
+                }
+                self.newConcept(null);
+            };
+            self.initAnswersForConcept = function (parent, concept) {
+                return _.map(concept.answers, function (answerConcept) {
+                    var answer = {
+                        answerConcept: answerConcept,
+                        answerSource: ko.observable(),
+                        answerSourceValue: ko.observable(),
+                        source: ko.computed(function () {
+                            if (parent.allowsMultipleAnswers()) {
+                                return answer.answerSource();
+                            } else {
+                                return parent.source();
+                            }
+                        })
+                    };
+                    return answer
+                });
+            };
+            self.removeObservation = function (observation) {
+                self.observations.remove(observation);
+            };
+            self.formatCalculate = function (calculate) {
+                var caseRegex = new RegExp("instance\\('casedb'\\)/casedb/case\\[@case_id\\s=\\sinstance\\('commcaresession'\\)/session/data/case_id\\]", 'g');
+                return calculate.replace(caseRegex, '#case');
+            };
+            return self;
+        }
+        // global
+        viewModel = ObservationsViewModel();
+        $.getJSON("{% url 'commcarehq_application_form_questions' domain 'c5f4816d5782be671a570ac944dda40e' 'c26ada00320f741a6468362cd6bc6797f2873c96' %}").done(function (data) {
+            viewModel.commcarehqFormQuestions(data);
+        });
+        $('#koObservations').koApplyBindings(viewModel);
+        $('form').submit(function (e) {
+            e.preventDefault();
+        })
+    });
+</script>
+{% endblock %}

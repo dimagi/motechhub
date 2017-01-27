@@ -1,0 +1,822 @@
+[
+    {
+        "retired": false,
+        "uuid": "e1e0b31c-1d5f-11e0-b929-000c29ad1d07",
+        "datatype": "Coded",
+        "concept_class": "Question",
+        "answers": [
+            {
+                "retired": false,
+                "uuid": "e1d81b62-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "YES"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "SIM"
+                    }
+                ],
+                "display": "SIM",
+                "descriptions": [
+                    "Generic answer to a question.",
+                    "Resposta generica de uma pergunta"
+                ]
+            },
+            {
+                "retired": false,
+                "uuid": "e1d81c70-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "pt",
+                        "display": "NAO"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "NO"
+                    }
+                ],
+                "display": "NAO",
+                "descriptions": [
+                    "Generic answer to a question.",
+                    "Resposta generica de uma pergunta"
+                ]
+            },
+            {
+                "retired": false,
+                "uuid": "e1d81d7e-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "pt",
+                        "display": "NAO SABE"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "DESCONHECIDO"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "UNKNOWN"
+                    }
+                ],
+                "display": "DESCONHECIDO",
+                "descriptions": [
+                    "Generic answer to a question.",
+                    "Resposta generica a uma pergunta."
+                ]
+            }
+        ],
+        "names": [
+            {
+                "locale": "pt",
+                "display": "EM TRATAMENTO ARV, CODIFICADO"
+            },
+            {
+                "locale": "en",
+                "display": "ON ARV TREATMENT, CODED"
+            }
+        ],
+        "display": "EM TRATAMENTO ARV, CODIFICADO",
+        "descriptions": []
+    },
+    {
+        "retired": false,
+        "uuid": "e1e22648-1d5f-11e0-b929-000c29ad1d07",
+        "datatype": "Coded",
+        "concept_class": "Question",
+        "answers": [
+            {
+                "retired": false,
+                "uuid": "e1cdd58a-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Diagnosis",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "pt",
+                        "display": "GESTACAO"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "GRAVIDEZ"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "PREGNANCY"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "GESTATION"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "FECUNDIDADE_X"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "FECUNDIDADE"
+                    }
+                ],
+                "display": "FECUNDIDADE_X",
+                "descriptions": ["The period from conception to birth when a woman carries a developing fetus in her uterus."]
+            },
+            {
+                "retired": false,
+                "uuid": "e1cde840-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Diagnosis",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "TUBERCULOSIS"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "TB"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "TUBERCULOSIS NOS"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "TB"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "TUBUCULOSE"
+                    }
+                ],
+                "display": "TUBUCULOSE",
+                "descriptions": ["An infection with the bacteria mycobacterium tuberculosis, site not specified."]
+            },
+            {
+                "retired": false,
+                "uuid": "e1e214a0-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "CHILD"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "KID"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "CRIAN\u00c7A"
+                    }
+                ],
+                "display": "CRIAN\u00c7A",
+                "descriptions": ["Todo paciente com idade inferior ou igual a 14 anos", "All patients aged less than or equal to 14 years"]
+            }
+        ],
+        "names": [
+            {
+                "locale": "en",
+                "display": "INFORMATION ABOUT THE PATIENT TO VISIT"
+            },
+            {
+                "locale": "pt",
+                "display": "INFORMA\u00c7\u00c3O SOBRE O PACIENTE A VISITAR"
+            }
+        ],
+        "display": "INFORMA\u00c7\u00c3O SOBRE O PACIENTE A VISITAR",
+        "descriptions": []
+    },
+    {
+        "retired": false,
+        "uuid": "e1e2254e-1d5f-11e0-b929-000c29ad1d07",
+        "datatype": "Coded",
+        "concept_class": "Question",
+        "answers": [
+            {
+                "retired": false,
+                "uuid": "e1de46a4-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "Text",
+                "concept_class": "Question",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "CONFIDANT NAME"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "NOME DO CONFIDENTE"
+                    }
+                ],
+                "display": "NOME DO CONFIDENTE",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e09832-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "pt",
+                        "display": "VIZINHO"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "NEIGHBOR"
+                    }
+                ],
+                "display": "VIZINHO",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e099ae-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "RELATIVE PERSON"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "FAMILIAR"
+                    }
+                ],
+                "display": "FAMILIAR",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e09bf2-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "Text",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "CHIEF OF NEIGHBORHOOD"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "CHEFE DE  BAIRRO"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "SECRETARIO DO BAIRRO"
+                    }
+                ],
+                "display": "CHEFE DE  BAIRRO",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e51452-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "Numeric",
+                "concept_class": "Test",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "PATIENT ID"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "NID"
+                    }
+                ],
+                "display": "NID",
+                "descriptions": ["Patient's Identification number", "Numero de Identificacao do doente."]
+            }
+        ],
+        "names": [
+            {
+                "locale": "en",
+                "display": "AUTHORIZED CONTACT WITH PATIENT"
+            },
+            {
+                "locale": "pt",
+                "display": "PACIENTE AUTORIZOU CONTACTO COM"
+            }
+        ],
+        "display": "PACIENTE AUTORIZOU CONTACTO COM",
+        "descriptions": []
+    },
+    {
+        "retired": false,
+        "uuid": "e1e22044-1d5f-11e0-b929-000c29ad1d07",
+        "datatype": "Coded",
+        "concept_class": "Question",
+        "answers": [
+            {
+                "retired": false,
+                "uuid": "e1da63c2-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "Numeric",
+                "concept_class": "Test",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "ELIGIBLE"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "ELEG\u00cdVEL"
+                    }
+                ],
+                "display": "ELEG\u00cdVEL",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e20f5a-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "SUPPORT VISIT"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "VISITA DE APOIO"
+                    }
+                ],
+                "display": "VISITA DE APOIO",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e215cc-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "TESTED HIV + BUT WITHOUT OPENING SERVICE OF PROCESS IN CLINICAL ART"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "TESTADO HIV+ MAS SEM ABERTURA DE PROCESSO CLINICO NO SERVICO TARV"
+                    }
+                ],
+                "display": "TESTADO HIV+ MAS SEM ABERTURA DE PROCESSO CLINICO NO SERVICO TARV",
+                "descriptions": ["Includes patients who were tested in the field of TB, ATS (Counselling and Testing in Health), hospitals, or general inquiries and PMCT that are not yet in service following ART", "Inclui os pacientes que foram testados no sector de TB, ATS (Aconselhamento e Testagem em Sa\u00fade), enfermarias, PTV ou consultas gerais e que ainda n\u00e3o iniciaram seguimento no servi\u00e7o TARV"]
+            },
+            {
+                "retired": false,
+                "uuid": "e1e216da-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "WITHOUT PRE-ART COUNSELING"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "SEM ACONSELHAMENTO PRE-TARV"
+                    }
+                ],
+                "display": "SEM ACONSELHAMENTO PRE-TARV",
+                "descriptions": ["Patients who sued the ART service but had no initial counseling", "Pacientes que abriram processo no servico TARV mas n\u00e3o tiveram aconselhamento inicial"]
+            },
+            {
+                "retired": false,
+                "uuid": "e1e21810-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "pt",
+                        "display": "SEM PRIMEIRA CONSULTA (TRIAGEM)"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "WITHOUT FIRST CONSULTING (SCREENING)"
+                    }
+                ],
+                "display": "SEM PRIMEIRA CONSULTA (TRIAGEM)",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e2191e-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "pt",
+                        "display": "SEM CD4 INICIAL"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "WITHOUT INITIAL CD4"
+                    }
+                ],
+                "display": "SEM CD4 INICIAL",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e21a18-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "pt",
+                        "display": "RESULTADO DE CD4 SEM CONSULTA"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "RESULTS CD4 WITHOUT CONSULTATION"
+                    }
+                ],
+                "display": "RESULTADO DE CD4 SEM CONSULTA",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e21b12-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "pt",
+                        "display": "AUSENTE AO LEVANTAMENTO DE MEDICAMENTOS ARV"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "ABSENT THE WITHDRAWAL OF ART DRUGS"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "AUSENTE"
+                    }
+                ],
+                "display": "AUSENTE",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e21c16-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "SMEAR POSITIVE UNTREATED"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "BK+ SEM TRATAMENTO"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "BACILOSCOPIA POSITIVA SEM TRATAMENTO"
+                    }
+                ],
+                "display": "BACILOSCOPIA POSITIVA SEM TRATAMENTO",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e21d10-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "pt",
+                        "display": "CRIAN\u00c7A EXPOSTA"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "CHILDREN EXPOSED"
+                    }
+                ],
+                "display": "CRIAN\u00c7A EXPOSTA",
+                "descriptions": ["Crian\u00e7as filhos de maes seropositivas que ainda n\u00e3o t\u00eam o seu diagnostico de HIV definido. Inclui os casos que fizeram an\u00e1lise de PCR e n\u00e3o foram \u00e0 consulta saber o resultado, aqueles casos que ainda n\u00e3o fizeram an\u00e1lise, e aqueles casos que n\u00e3o completaram toda a investiga\u00e7\u00e3o para saber se est\u00e3o infectados ou n\u00e3o", "The children of mothers with HIV who do not have their HIV diagnosis set. Includes cases that did PCR analysis and were not to know the query result, those cases that have not done analysis, and those cases who have not completed all the research to know they are infected or not"]
+            },
+            {
+                "retired": false,
+                "uuid": "e1e21f22-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "Text",
+                "concept_class": "Question",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "pt",
+                        "display": "OUTRO MOTIVO DE VISITA AO PACIENTE"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "ANOTHER REASON TO VISIT THE PATIENT"
+                    }
+                ],
+                "display": "OUTRO MOTIVO DE VISITA AO PACIENTE",
+                "descriptions": []
+            }
+        ],
+        "names": [
+            {
+                "locale": "pt",
+                "display": "MOTIVO DE VISITA/BUSCA DO PACIENTE"
+            },
+            {
+                "locale": "en",
+                "display": "REASON FOR VISIT / SEARCH THE PATIENT"
+            }
+        ],
+        "display": "MOTIVO DE VISITA/BUSCA DO PACIENTE",
+        "descriptions": []
+    },
+    {
+        "retired": false,
+        "uuid": "e1e2244a-1d5f-11e0-b929-000c29ad1d07",
+        "datatype": "Coded",
+        "concept_class": "Question",
+        "answers": [
+            {
+                "retired": false,
+                "uuid": "e1daea2c-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "PNCT"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "PNCT"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "PLANO NACIONAL PARA COMBATE TUBERCULOSE"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "PLANO NACIONAL PARA COMBATE TUBERCULOSE"
+                    }
+                ],
+                "display": "PLANO NACIONAL PARA COMBATE TUBERCULOSE",
+                "descriptions": ["[Mozambique only]"]
+            },
+            {
+                "retired": false,
+                "uuid": "e1dca6e6-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Finding",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "pt",
+                        "display": "PTV"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "PREVENTION MOTHER CHILD TRANSMISSION"
+                    },
+                    {
+                        "locale": "en",
+                        "display": "PMTCT"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "PREVENCAO DE TRANSMISSAO VERTICAL"
+                    }
+                ],
+                "display": "PREVENCAO DE TRANSMISSAO VERTICAL",
+                "descriptions": ["[Preven\u00e7\u00e3o de Transmiss\u00e3o Vertical]"]
+            },
+            {
+                "retired": false,
+                "uuid": "e1e2224c-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "PEDIATRIC ART SERVICE"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "SERVI\u00c7O TARV PEDIATRICO"
+                    }
+                ],
+                "display": "SERVI\u00c7O TARV PEDIATRICO",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e22350-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "ADULT ART SERVICE"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "SERVI\u00c7O TARV ADULTO"
+                    }
+                ],
+                "display": "SERVI\u00c7O TARV ADULTO",
+                "descriptions": []
+            }
+        ],
+        "names": [
+            {
+                "locale": "pt",
+                "display": "SERVI\u00c7O QUE REFERE A VISITA DOMICILIARIA"
+            },
+            {
+                "locale": "en",
+                "display": "SERVICE THAT REFERS TO THE HOME VISIT"
+            }
+        ],
+        "display": "SERVI\u00c7O QUE REFERE A VISITA DOMICILIARIA",
+        "descriptions": []
+    },
+    {
+        "retired": false,
+        "uuid": "e1e055a2-1d5f-11e0-b929-000c29ad1d07",
+        "datatype": "Coded",
+        "concept_class": "Question",
+        "answers": [
+            {
+                "retired": false,
+                "uuid": "e1de377c-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Finding",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "INDIVIDUAL"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "INDIVIDUAL"
+                    }
+                ],
+                "display": "INDIVIDUAL",
+                "descriptions": ["Counseling session was done 1:1 "]
+            },
+            {
+                "retired": false,
+                "uuid": "e1e0195c-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "FAMILY"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "FAMILIA"
+                    }
+                ],
+                "display": "FAMILIA",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e054a8-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "MARRIED COUPLE"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "CASAL"
+                    }
+                ],
+                "display": "CASAL",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e20e4c-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "MISSED VISIT"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "VISITA DE BUSCA"
+                    }
+                ],
+                "display": "VISITA DE BUSCA",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e20f5a-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "N/A",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "SUPPORT VISIT"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "VISITA DE APOIO"
+                    }
+                ],
+                "display": "VISITA DE APOIO",
+                "descriptions": []
+            },
+            {
+                "retired": false,
+                "uuid": "e1e783ea-1d5f-11e0-b929-000c29ad1d07",
+                "datatype": "Text",
+                "concept_class": "Misc",
+                "answers": [],
+                "names": [
+                    {
+                        "locale": "en",
+                        "display": "OTHER NON-CODED"
+                    },
+                    {
+                        "locale": "pt",
+                        "display": "OUTRO, NAO CODIFICADO"
+                    }
+                ],
+                "display": "OUTRO, NAO CODIFICADO",
+                "descriptions": ["A generic, descriptive answer which is a handwritten, non-coded response to a question.", "Um gen\u00e9rico, descritivo, que \u00e9 uma resposta manuscrita, n\u00e3o codificados resposta a uma pergunta."]
+            }
+        ],
+        "names": [
+            {
+                "locale": "pt",
+                "display": "TIPO DE ATENDIMENTO FAMILIAR"
+            },
+            {
+                "locale": "en",
+                "display": "TYPE OF VISIT"
+            }
+        ],
+        "display": "TIPO DE ATENDIMENTO FAMILIAR",
+        "descriptions": []
+    },
+    {
+        "retired": false,
+        "uuid": "e1e073f2-1d5f-11e0-b929-000c29ad1d07",
+        "datatype": "Date",
+        "concept_class": "Question",
+        "answers": [],
+        "names": [
+            {
+                "locale": "en",
+                "display": "DATE PATIENT WENT MISSING"
+            },
+            {
+                "locale": "pt",
+                "display": "DATA DE FALTA"
+            }
+        ],
+        "display": "DATA DE FALTA",
+        "descriptions": []
+    }
+]

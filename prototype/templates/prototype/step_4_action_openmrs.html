@@ -1,0 +1,34 @@
+{% extends 'prototype/base.html' %}
+{% load staticfiles %}
+{% block sidebar %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Trigger: CommCare HQ</h3>
+        </div>
+        <div class="panel-body">
+            <img class="pull-left" src="{% static 'prototype/img/commcarehq-small.png' %}" alt="CommCare HQ"/>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item"><strong>When</strong>: A new form is submitted</li>
+            <li class="list-group-item"><strong>Application</strong>: Educador de Saude 2.0</li>
+            <li class="list-group-item"><strong>Form</strong>: First Visit</li>
+        </ul>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Action: OpenMRS</h3>
+        </div>
+        <div class="panel-body">
+            <img src="{% static 'prototype/img/openmrs-small.png' %}" alt="CommCare HQ"/>
+        </div>
+    </div>
+
+{% endblock %}
+{% block content %}
+<h1>Select OpenMRS action</h1>
+<ul class="nav nav-pills nav-stacked">
+    <li><a href="{% url 'step_5_select_encounter_type' domain %}">Create an Encounter</a></li>
+    <li><a href="">Create or update a patient</a></li>
+</ul>
+
+{% endblock %}

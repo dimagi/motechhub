@@ -1,0 +1,20 @@
+{% extends 'prototype/base.html' %}
+{% load staticfiles %}
+{% block sidebar %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Trigger: CommCare HQ</h3>
+        </div>
+        <div class="panel-body">
+            <img class="pull-left" src="{% static 'prototype/img/commcarehq-small.png' %}" alt="CommCare HQ"/>
+        </div>
+    </div>
+
+{% endblock %}
+{% block content %}
+<h1>Trigger when</h1>
+<ul class="nav nav-pills nav-stacked">
+    <li><a href="{% url 'prototype_select_form' domain %}">A new form is submitted</a></li>
+    <li><a href="">A case is updated or created</a></li>
+</ul>
+{% endblock %}
