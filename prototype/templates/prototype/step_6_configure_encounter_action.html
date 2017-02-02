@@ -78,13 +78,6 @@
         <div class="form-group">
             <label for="observations" class="col-sm-2 control-label">Observations</label>
             <div class="col-sm-10" id="koObservations">
-                <select class='select2 form-control' data-bind="
-                    options: concepts,
-                    optionsText: 'display',
-                    value: newConcept,
-                    optionsCaption: 'Select a concept to add...',
-                    event: {change: addObservation}
-                "></select>
                 <table class="table" data-bind="if: observations().length">
                     <thead>
                         <tr>
@@ -157,6 +150,13 @@
                         <!--/ko-->
                     </tbody>
                 </table>
+                <select class='select2 form-control' data-bind="
+                    options: concepts,
+                    optionsText: 'display',
+                    value: newConcept,
+                    optionsCaption: 'Select a concept to add...',
+                    event: {change: addObservation}
+                "></select>
             </div>
         </div>
 
