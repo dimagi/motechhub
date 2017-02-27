@@ -13,7 +13,7 @@
                 });
                 self.selectedCaseSpec = ko.observable();
                 self.init = function () {
-                    return $.getJSON("{% url 'known_case_properties' domain %}").done(function (data) {
+                    return $.getJSON("{% url 'commcarehq_known_case_properties' domain %}").done(function (data) {
                         self.allCaseSpecs(data);
                     });
                 };

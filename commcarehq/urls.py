@@ -13,7 +13,7 @@ urlpatterns = [
         name='commcarehq_application_form_questions'),
     url(r'^rest/case_properties/$',
         views.known_case_properties,
-        name='known_case_properties'),
+        name='commcarehq_known_case_properties'),
     url(r'^case_properties/$',
         views.known_case_properties_page,
         name='known_case_properties_page'),

@@ -1,0 +1,41 @@
+<script type="text/html" id="ko:patientCorrespondence">
+    <!--ko ifnot: expanded-->
+    <ul class="nav nav-pills nav-stacked">
+        <li><a href="#" data-bind="click: function () { expanded(true); }">Create a correspondence</a></li>
+        <li class="disabled"><a href="#" data-bind="click: function () {  }">Use existing correspondence</a></li>
+    </ul>
+    <!--/ko-->
+    <!--ko if: expanded-->
+    <h3>Correspondence</h3>
+    <!--ko if: items().length-->
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Patient type</th>
+                <th>Matching Value</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: items">
+            <tr>
+                <td></td>
+                <td data-bind="text: patientIdentifierType.display"></td>
+                <td>
+                    <select data-bind="
+                        options: $root.caseProperties,
+                        value: caseProperty
+                    ">
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!--/ko-->
+    <select class="" data-bind="
+        options: patientIdentifierTypes,
+        optionsText: 'display',
+        optionsCaption: 'Select patient type',
+        event: {change: addItem}
+    "></select>
+    <!--/ko-->
+</script>
