@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import yaml
+
+with open(os.path.join(os.path.dirname(__file__), 'localsettings.yml')) as f:
+    localsettings = yaml.load(f)
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -79,17 +84,7 @@ WSGI_APPLICATION = 'motechhub.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'motechhub',
-        'USER': 'motechhub',
-        'PASSWORD': 'motechhub****',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
+DATABASES = localsettings['DATABASES']
 
 
 # Password validation
