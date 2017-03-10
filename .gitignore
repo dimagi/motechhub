@@ -1,3 +1,10 @@
+db.sqlite3
+bower_components/
+node_modules/
+cache/
+localsettings.yml
+.idea
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -88,8 +95,3 @@ ENV/
 # Rope project settings
 .ropeproject
 
-db.sqlite3
-bower_components/
-cache/
-localsettings.yml
-.idea

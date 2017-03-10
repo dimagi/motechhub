@@ -20,5 +20,5 @@ from streams.views import list_streams, handle_stream
 urlpatterns = [
     url(r'^_admin/', admin.site.urls),
     url(r'^$', list_streams),
-    url(r'^(?P<stream_name>[\w-])+/$', handle_stream),
+    url(r'^(?P<stream_name>[\w-]+)$', handle_stream),
 ]

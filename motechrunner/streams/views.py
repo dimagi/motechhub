@@ -9,7 +9,7 @@ def list_streams(request):
 
 
 def _create_stream(request, stream_name):
-    if Stream.objects.exists(name=stream_name):
+    if Stream.objects.filter(name=stream_name).exists():
         return JsonResponse({
             "error": "file_exists",
             "reason": "The stream could not be created, the file already exists."
@@ -29,7 +29,7 @@ def _get_stream(request, stream_name):
     except Stream.DoesNotExist:
         return JsonResponse({
             "error": "not_found",
-            "reason": "The stream does not exist",
+            "reason": "The stream does not exist.",
         }, status=404)
     else:
         return JsonResponse(
@@ -44,12 +44,12 @@ def _delete_stream(request, stream_name):
     except Stream.DoesNotExist:
         return JsonResponse({
             "error": "not_found",
-            "reason": "The stream does not exist",
+            "reason": "The stream does not exist.",
         }, status=404)
     else:
         stream.delete()
         return JsonResponse(
-            {'name': stream.name},
+            {'ok': True},
             status=200
         )
 
