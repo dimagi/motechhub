@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from streams.views import list_streams, handle_stream
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^_admin/', admin.site.urls),
+    url(r'^$', list_streams),
+    url(r'^(?P<stream_name>[\w-])+/$', handle_stream),
 ]
