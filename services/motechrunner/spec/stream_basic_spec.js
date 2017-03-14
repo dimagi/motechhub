@@ -1,15 +1,8 @@
-let URL = 'http://localhost:7001';
+let URL = require('./constants.js').URL;
+let create = require('./constants.js').create;
 
-let frisby = require('frisby');
-
-function create(name) {
-    return frisby.create(name)
-        .expectHeaderContains('content-type', 'application/json');
-}
 
 create('(Clear from last run)').delete(URL + '/teststream');
-
-
 
 create('Get list of streams')
   .get(URL + '/')
