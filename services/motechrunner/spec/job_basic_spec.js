@@ -109,5 +109,20 @@ create('Updating with future rev causes a Conflict')
     .toss();
 });
 
+create('Creating a job with bad javascript causes a Bad Request')
+.put(URL + '/testjobstream/job/556cfe1b-a4d5-4e39-b72e-60bb419975d4', null, {
+  body: JSON.stringify({
+    javascript: '(function (message)',
+    filter: {},
+    rev: 2
+  })
+})
+.expectStatus(400)
+.expectJSON({
+  error: 'bad_request',
+  reason: 'Javascript must be valid.',
+})
+.toss();
+
 create('Tear down stream')
   .delete(URL + '/testjobstream').toss();

@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods, require_GET
 import jsonobject
 from jsonobject.exceptions import WrappingAttributeError, BadValueError
+from jobs.javascript import javascript_is_valid
 from jobs.models import Job
 from streams.models import Stream
 
@@ -57,6 +58,12 @@ def _put_job(request, stream_name, job_id):
         return JsonResponse({
             'error': 'bad_request',
             'reason': 'Request body JSON must adhere to spec'
+        }, status=400)
+
+    if not javascript_is_valid(job_spec.javascript):
+        return JsonResponse({
+            'error': 'bad_request',
+            'reason': 'Javascript must be valid.'
         }, status=400)
 
     def update_conflict_response():
