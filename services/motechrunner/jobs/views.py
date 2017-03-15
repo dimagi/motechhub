@@ -2,7 +2,7 @@ import json
 import uuid
 from django.db import IntegrityError
 from django.http import JsonResponse
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_GET
 import jsonobject
 from jsonobject.exceptions import WrappingAttributeError, BadValueError
 from jobs.models import Job
@@ -96,3 +96,22 @@ def handle_job(request, stream_name, job_id):
         return _put_job(request, stream_name, job_id)
     elif request.method == 'GET':
         return _get_job(request, stream_name, job_id)
+
+
+@require_GET
+def get_job_list(request, stream_name):
+    try:
+        stream = Stream.objects.get(name=stream_name)
+    except Stream.DoesNotExist:
+        return JsonResponse({
+            'error': 'not_found',
+            'reason': "The stream does not exist."
+        }, status=404)
+
+    jobs = Job.get_latest_jobs(stream)
+    return JsonResponse([{
+        'id': str(job.uuid),
+        'rev': job.rev,
+        'filter': job.filter,
+        'javascript': job.javascript,
+    } for job in jobs], safe=False)

@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from jobs.views import handle_job
+from jobs.views import handle_job, get_job_list
 from streams.views import list_streams, handle_stream
 
 uuid_re = r'[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}'
@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^_admin/', admin.site.urls),
     url(r'^$', list_streams),
     url(r'^(?P<stream_name>[a-z-]+)$', handle_stream),
+    url(r'^(?P<stream_name>[a-z-]+)/job$', get_job_list),
     url(r'^(?P<stream_name>[a-z-]+)/job/(?P<job_id>{})$'.format(uuid_re), handle_job),
 ]
