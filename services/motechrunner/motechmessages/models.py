@@ -7,19 +7,22 @@ from streams.models import Stream
 
 class Message(models.Model):
     stream = models.ForeignKey(Stream)
+    uuid = models.UUIDField()
     body = JSONField()
-
-
-class MessageRunState(object):
-    scheduled = 0
-    started = 1
-    success = 2
-    failed = 3
+    created = models.DateTimeField(auto_now=True)
 
 
 class MessageRun(models.Model):
     message = models.ForeignKey(Message)
-    state = models.IntegerField()
+    state = models.CharField(
+        max_length=9,
+        choices=(
+            ('scheduled', 'Scheduled'),
+            ('started', 'Started'),
+            ('success', 'Success'),
+            ('failed', 'Failed'),
+        )
+    )
 
 
 class MessageRunArtifact(models.Model):
@@ -27,6 +30,11 @@ class MessageRunArtifact(models.Model):
     created = models.DateTimeField(auto_now=True)
     level = models.CharField(
         max_length=5,
-        choices=(('DEBUG', 'Debug'), ('INFO', 'Info'),
-                 ('WARN', 'Warn'), ('ERROR', 'Error')))
+        choices=(
+            ('DEBUG', 'Debug'),
+            ('INFO', 'Info'),
+            ('WARN', 'Warn'),
+            ('ERROR', 'Error')
+        )
+    )
     body = JSONField()
