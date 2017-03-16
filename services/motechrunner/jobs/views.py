@@ -12,6 +12,8 @@ from streams.models import Stream
 
 class _PutJobBody(jsonobject.JsonObject):
     _allow_dynamic_properties = False
+    _string_conversions = ()
+
     javascript = jsonobject.StringProperty(required=True)
     filter = jsonobject.DictProperty()
     # the rev of the job to _replace_; value of 0 means create
