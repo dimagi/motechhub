@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     'streams',
     'jobs',
+    'motechmessages',
 ]
 
 MIDDLEWARE = [
