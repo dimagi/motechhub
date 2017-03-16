@@ -3,11 +3,11 @@ from django.core.validators import MinValueValidator
 
 from django.db import models
 from jsonfield import JSONField
-from jobs.exceptions import ReadOnlyError
+from shared.django_models.append_only import AppendOnlyModelMixin
 from streams.models import Stream
 
 
-class Job(models.Model):
+class Job(AppendOnlyModelMixin, models.Model):
     uuid = models.UUIDField()
     rev = models.PositiveIntegerField(validators=MinValueValidator(1))
     stream = models.ForeignKey(Stream)
@@ -31,10 +31,3 @@ class Job(models.Model):
           ON stream_id = %(stream_id)s AND job.rev = job_inner.rev AND job.uuid = job_inner.uuid
           ORDER BY job.modified
         """, {'stream_id': stream.id})
-
-    def save(self, *args, **kwargs):
-        if self.pk:
-            raise ReadOnlyError(
-                'The Job table is append only. '
-                'To "edit" a row, create a new row with an incremented rev.')
-        super(Job, self).save(*args, **kwargs)
