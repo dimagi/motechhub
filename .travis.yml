@@ -9,6 +9,7 @@ before_install:
 install:
   - bash -c "cd services/$SERVICE; ./test/install.sh"
 before_script:
+  - bash -c "cd services/$SERVICE/$SERVICE; cp localsettings.yml.example localsettings.yml"
   - bash -c "cd services/$SERVICE; ./test/before_script.sh"
 script:
   - bash -c "cd services/$SERVICE; ./test/script.sh"
