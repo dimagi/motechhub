@@ -6,20 +6,13 @@ from django.views.decorators.http import require_POST, require_http_methods, req
 import jsonobject
 import pytz
 from motechmessages.models import Message, MessageRun
-from streams.models import Stream
+from streams.view_decorators import require_valid_stream
 
 
 @require_POST
 @transaction.atomic
-def _post_message(request, stream_name):
-    try:
-        stream = Stream.objects.get(name=stream_name)
-    except Stream.DoesNotExist:
-        return JsonResponse({
-            'error': 'not_found',
-            'reason': "The stream does not exist."
-        }, status=404)
-
+@require_valid_stream
+def _post_message(request, stream):
     try:
         message_body = json.loads(request.body)
     except ValueError:
@@ -60,16 +53,10 @@ class MessageJSON(jsonobject.JsonObject):
             body=message.body,
         )
 
-@require_GET
-def _get_message_list(request, stream_name):
-    try:
-        stream = Stream.objects.get(name=stream_name)
-    except Stream.DoesNotExist:
-        return JsonResponse({
-            'error': 'not_found',
-            'reason': "The stream does not exist."
-        }, status=404)
 
+@require_GET
+@require_valid_stream
+def _get_message_list(request, stream):
     try:
         limit = int(request.GET.get('limit'))
     except (TypeError, ValueError):

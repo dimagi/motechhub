@@ -8,6 +8,7 @@ from jsonobject.exceptions import WrappingAttributeError, BadValueError
 from jobs.javascript import javascript_is_valid
 from jobs.models import Job
 from streams.models import Stream
+from streams.view_decorators import require_valid_stream
 
 
 class _PutJobBody(jsonobject.JsonObject):
@@ -37,15 +38,8 @@ def _get_job(request, stream_name, job_id):
         })
 
 
-def _put_job(request, stream_name, job_id):
-    try:
-        stream = Stream.objects.get(name=stream_name)
-    except Stream.DoesNotExist:
-        return JsonResponse({
-            'error': 'not_found',
-            'reason': "The stream does not exist."
-        }, status=404)
-
+@require_valid_stream
+def _put_job(request, stream, job_id):
     try:
         job_spec = json.loads(request.body)
     except ValueError:
@@ -108,15 +102,8 @@ def handle_job(request, stream_name, job_id):
 
 
 @require_GET
-def get_job_list(request, stream_name):
-    try:
-        stream = Stream.objects.get(name=stream_name)
-    except Stream.DoesNotExist:
-        return JsonResponse({
-            'error': 'not_found',
-            'reason': "The stream does not exist."
-        }, status=404)
-
+@require_valid_stream
+def get_job_list(request, stream):
     jobs = Job.get_latest_jobs(stream)
     return JsonResponse([{
         'id': str(job.uuid),

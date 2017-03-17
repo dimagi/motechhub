@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from streams.models import Stream
+from streams.view_decorators import require_valid_stream
 
 
 def list_streams(request):
@@ -23,35 +24,21 @@ def _create_stream(request, stream_name):
         )
 
 
-def _get_stream(request, stream_name):
-    try:
-        stream = Stream.objects.get(name=stream_name)
-    except Stream.DoesNotExist:
-        return JsonResponse({
-            "error": "not_found",
-            "reason": "The stream does not exist.",
-        }, status=404)
-    else:
-        return JsonResponse(
-            {'name': stream.name},
-            status=200
-        )
+@require_valid_stream
+def _get_stream(request, stream):
+    return JsonResponse(
+        {'name': stream.name},
+        status=200
+    )
 
 
-def _delete_stream(request, stream_name):
-    try:
-        stream = Stream.objects.get(name=stream_name)
-    except Stream.DoesNotExist:
-        return JsonResponse({
-            "error": "not_found",
-            "reason": "The stream does not exist.",
-        }, status=404)
-    else:
-        stream.delete()
-        return JsonResponse(
-            {'ok': True},
-            status=200
-        )
+@require_valid_stream
+def _delete_stream(request, stream):
+    stream.delete()
+    return JsonResponse(
+        {'ok': True},
+        status=200
+    )
 
 
 def handle_stream(request, stream_name):
