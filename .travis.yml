@@ -1,0 +1,16 @@
+language: python
+env:
+  matrix:
+    - SERVICE=motechrunner
+before_install:
+  - . $HOME/.nvm/nvm.sh
+  - nvm install stable
+  - nvm use stable
+install:
+  - bash -c "cd services/$SERVICE; ./test/install.sh"
+before_script:
+  - bash -c "cd services/$SERVICE; ./test/before_script.sh"
+script:
+  - bash -c "cd services/$SERVICE; ./test/script.sh"
+after_script:
+  - bash -c "cd services/$SERVICE; ./test/after_script.sh"
