@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods, require_GET
 import jsonobject
 from jsonobject.exceptions import WrappingAttributeError, BadValueError
+from jobs.dbaccessors import get_jobs_for_stream
 from jobs.javascript import javascript_is_valid
 from jobs.models import Job
 from streams.models import Stream
@@ -104,7 +105,7 @@ def handle_job(request, stream_name, job_id):
 @require_GET
 @require_valid_stream
 def get_job_list(request, stream):
-    jobs = Job.get_latest_jobs(stream)
+    jobs = get_jobs_for_stream(stream)
     return JsonResponse([{
         'id': str(job.uuid),
         'rev': job.rev,
