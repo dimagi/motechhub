@@ -53,6 +53,12 @@ class MessageJSON(jsonobject.JsonObject):
     created = jsonobject.DateTimeProperty(exact=True)
     body = jsonobject.DictProperty()
 
+    @classmethod
+    def from_message(cls, message):
+        return cls(
+            created=message.created.astimezone(pytz.utc).replace(tzinfo=None),
+            body=message.body,
+        )
 
 @require_GET
 def _get_message_list(request, stream_name):
@@ -75,10 +81,7 @@ def _get_message_list(request, stream_name):
     messages = Message.objects.filter(stream=stream).order_by('-pk')[:limit]
 
     return JsonResponse([
-        MessageJSON(
-            created=message.created.astimezone(pytz.utc).replace(tzinfo=None),
-            body=message.body,
-        ).to_json()
+        MessageJSON.from_message(message).to_json()
         for message in messages
     ], status=200, safe=False)
 
