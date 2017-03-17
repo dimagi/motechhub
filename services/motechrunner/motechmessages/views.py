@@ -5,7 +5,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST, require_http_methods, require_GET
 import jsonobject
 import pytz
-from motechmessages.models import Message, MessageRun
+from jobs.dbaccessors import get_jobs_matching_message
+from motechmessages.models import Message, MessageRun, MessageRunJob
 from streams.view_decorators import require_valid_stream
 
 
@@ -31,7 +32,16 @@ def _post_message(request, stream):
     message_run = MessageRun(message=message)
     message_run.save()
 
-    # todo: create runs jobs for each matching job
+    jobs = get_jobs_matching_message(stream, message)
+    for job in jobs:
+        message_run_job = MessageRunJob(
+            message_run=message_run,
+            job=job,
+            state='scheduled',
+        )
+        message_run_job.save()
+
+    # todo: enqueue task to run each run job
 
     return JsonResponse({
         'ok': True,
@@ -45,12 +55,46 @@ class MessageJSON(jsonobject.JsonObject):
 
     created = jsonobject.DateTimeProperty(exact=True)
     body = jsonobject.DictProperty()
+    runs = jsonobject.ListProperty(lambda: MessageJSON.MessageRunJSON)
+
+    class MessageRunJSON(jsonobject.JsonObject):
+
+        created = jsonobject.DateTimeProperty(exact=True)
+        run_jobs = jsonobject.ListProperty(
+            lambda: MessageJSON.MessageRunJSON.MessageRunJobJSON,
+            name='runJobs')
+
+        class MessageRunJobJSON(jsonobject.JsonObject):
+            job = jsonobject.ObjectProperty(lambda: MessageJSON.MessageRunJSON.MessageRunJobJSON.MessageRunJobInfoJSON)
+            state = jsonobject.StringProperty()
+            modified = jsonobject.DateTimeProperty()
+
+            class MessageRunJobInfoJSON(jsonobject.JsonObject):
+                id = jsonobject.StringProperty()
+                rev = jsonobject.IntegerProperty()
 
     @classmethod
     def from_message(cls, message):
         return cls(
             created=message.created.astimezone(pytz.utc).replace(tzinfo=None),
             body=message.body,
+            runs=[
+                cls.MessageRunJSON(
+                    created=message_run.created.astimezone(pytz.utc).replace(tzinfo=None),
+                    run_jobs=[
+                        cls.MessageRunJSON.MessageRunJobJSON(
+                            job=cls.MessageRunJSON.MessageRunJobJSON.MessageRunJobInfoJSON(
+                                id=str(message_run_job.job.uuid),
+                                rev=message_run_job.job.rev,
+                            ),
+                            state=message_run_job.state,
+                            modified=message_run_job.modified.astimezone(pytz.utc).replace(tzinfo=None)
+                        )
+                        for message_run_job in message_run.messagerunjob_set.all()
+                    ]
+                )
+                for message_run in message.messagerun_set.all()
+            ],
         )
 
 
