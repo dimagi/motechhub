@@ -21,7 +21,14 @@ describe("Auth Proxy's ability to proxy", () => {
   });
 
   beforeAll((done) => {
-    credentialDatabase.set(token, {target: 'http://localhost:9000', username: 'admin', password: '123'}, () => {
+    credentialDatabase.set(token, {
+      target: 'http://localhost:9000',
+      auth: {
+        method: 'basic',
+        username: 'admin',
+        password: '123'
+      }
+    }, () => {
       done();
     });
   });
@@ -89,10 +96,10 @@ describe("Auth Proxy's credential storing API", () => {
       expect(response.statusCode).toBe(200);
       credentialDatabase.get(token, (err, credential) => {
         expect(err).toBeFalsy();
-        expect(credential).toEqual({target: 'http://localhost:8000'});
+        expect(credential).toEqual({target: 'http://localhost:8000', auth: {method: 'none'}});
         done();
       });
-    }).json({target: 'http://localhost:8000'});
+    }).json({target: 'http://localhost:8000', auth: {method: 'none'}});
   });
 
   it("will tell you when a credential does exist", (done) => {

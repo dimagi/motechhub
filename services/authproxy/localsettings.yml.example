@@ -1,0 +1,3 @@
+COUCHDB:
+    uri: 'http://localhost:5984'
+    db: 'authproxy'

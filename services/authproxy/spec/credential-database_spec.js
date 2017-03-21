@@ -8,12 +8,13 @@ describe("Credential Database", () => {
     dbName: 'test_authproxy',
     crypto: new Crypto('*** secret password ***'),
   });
+  let credential = {target: 'example.com', auth: {method: 'basic', username: 'admin', password: '123'}};
 
   credentialDatabase.init();
   let token = 'd3b07384d113edec49eaa6238ad5ff00';
 
   it("can store things", (done) => {
-    credentialDatabase.set(token, {username: 'admin', password: '123'}, (err) => {
+    credentialDatabase.set(token, credential, (err) => {
       expect(err).toEqual(null);
       done();
     });
@@ -22,7 +23,7 @@ describe("Credential Database", () => {
   it("can retrieve things", (done) => {
     credentialDatabase.get(token, (err, credentials) => {
       expect(err).toEqual(undefined);
-      expect(credentials).toEqual({username: 'admin', password: '123'});
+      expect(credentials).toEqual(credential);
       done();
     });
   });
