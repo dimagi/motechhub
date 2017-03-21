@@ -1,3 +1,4 @@
+/*globals describe, it, expect, beforeAll, afterAll */
 let Crypto = require('../crypto.js').Crypto;
 let CredentialDatabase = require('../credential-database.js').CredentialDatabase;
 
