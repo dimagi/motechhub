@@ -54,4 +54,14 @@ describe("Credential Database", () => {
       });
     });
   });
+
+  it("lets you delete credentials", (done) => {
+    credentialDatabase.clear(token, (err) => {
+      expect(err).toBeFalsy();
+      credentialDatabase.has(token, (err, hasToken) => {
+        expect(hasToken).toBeFalsy();
+        done();
+      });
+    })
+  });
 });

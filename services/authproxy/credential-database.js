@@ -29,6 +29,21 @@ class CredentialDatabase {
     });
   }
 
+  clear(token, callback) {
+    this.db.get(token, (err, body) => {
+      if (err && err.statusCode === 404) {
+        // already doesn't exist? no problem!
+        callback();
+      } else if (err) {
+        callback(err);
+      } else {
+        this.db.destroy(body._id, body._rev, (err, body) => {
+          callback(err);
+        });
+      }
+    });
+  }
+
   get(token, callback) {
     this.db.get(token, (err, body) => {
       if (!err) {
