@@ -1,7 +1,8 @@
 var http = require('http'),
     httpProxy = require('http-proxy'),
     url = require('url'),
-    express = require('express');
+    express = require('express'),
+    bodyParser = require('body-parser');
 
 
 class AuthProxy {
@@ -52,6 +53,30 @@ class AuthProxy {
           }
         });
       });
+
+      app.route('/:token')
+        .head((req, res) => {
+          let token = req.params.token;
+          this.credentialDatabase.has(token, (err, hasToken) => {
+            res.status(hasToken ? 200 : 404).end();
+          });
+        })
+        .put(bodyParser.json(), (req, res) => {
+          let token = req.params.token;
+          let credential = req.body;
+          if (!credential.target) {
+            res.status(400).send("Your credential must contain a 'target' property").end();
+          }
+          this.credentialDatabase.set(token, credential, (err) => {
+            res.status(err ? 500 : 200).end();
+          });
+        })
+        .delete((req, res) => {
+          let token = req.params.token;
+          this.credentialDatabase.clear(token, (err) => {
+            res.status(err ? 500 : 200).end();
+          });
+        });
 
       return app;
     })());
