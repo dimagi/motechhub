@@ -1,11 +1,11 @@
 // borrowed some code from http://lollyrock.com/articles/nodejs-encryption/
-var prompt = require('syncprompt');
+var deasync = require('deasync');
+var read = deasync(require('read'));
+
 var CryptoJS = require("crypto-js");
 
 let promptSecretKey = () => {
-  let secret = prompt("Secret Key? ", { secure: true });
-  console.log();
-  return secret;
+  return read({prompt: "Secret Key? ", silent: true});
 };
 
 class Crypto {
