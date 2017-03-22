@@ -38,6 +38,9 @@ cp localsettings.yml.example localsettings.yml
 node manage.js syncdb
 ```
 
+Syncdb will prompt you for a that will be used as the in-memory secret.
+You must enter this same password every time you start the server.
+
 To run the server
 
 ```
