@@ -58,7 +58,7 @@ class AuthProxy {
           if (err && err.statusCode === 404) {
             res.status(404).end();
           } else if (err && err.name == "Decryption Error") {
-            res.status(500).send("Could not decrypt credentials");
+            res.status(401).send("Could not decrypt credentials using the given key");
           } else if (err) {
             res.status(500).end();
           } else {
