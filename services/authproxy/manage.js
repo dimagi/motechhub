@@ -18,8 +18,8 @@ function runserver(localsettings) {
     new AuthProxy({
       credentialDatabase,
       ssl: {
-        key: fs.readFileSync('localhost.key', 'utf8'),
-        cert: fs.readFileSync('localhost.cert', 'utf8')
+        key: fs.readFileSync(localsettings.SSL.keyFile, 'utf8'),
+        cert: fs.readFileSync(localsettings.SSL.certFile, 'utf8')
       }
     }).listen();
   } else {
