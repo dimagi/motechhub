@@ -6,6 +6,7 @@ var http = require('http'),
     bodyParser = require('body-parser'),
     fs = require('fs');
 
+let AUTH_PROXY_TOKEN_PASSWORD_HEADER = 'x-authproxy-token-password';
 
 class AuthProxy {
   constructor({credentialDatabase, ssl = null}) {
@@ -24,7 +25,8 @@ class AuthProxy {
         let token = req.url.split('/')[1];
         let endpoint = options._endpoint;
         delete options._endpoint;
-        console.log(req.headers['host']);
+
+        proxyReq.removeHeader(AUTH_PROXY_TOKEN_PASSWORD_HEADER);
 
         proxyReq.path = '/' + req.url.split('/').slice(2).join('/');
         proxyReq.setHeader('host', url.parse(endpoint.target).host);
@@ -54,11 +56,12 @@ class AuthProxy {
 
       app.all(/\w+\/.*/, (req, res) => {
         let token = req.url.split('/')[1];
-        this.credentialDatabase.get(token, (err, endpoint) => {
+        let tokenPassword = req.headers[AUTH_PROXY_TOKEN_PASSWORD_HEADER];
+        this.credentialDatabase.get(token, tokenPassword, (err, endpoint) => {
           if (err && err.statusCode === 404) {
             res.status(404).end();
           } else if (err && err.name == "Decryption Error") {
-            res.status(401).send("Could not decrypt credentials using the given key");
+            res.status(401).send(JSON.stringify({message: `The ${AUTH_PROXY_TOKEN_PASSWORD_HEADER} header was incorrect`}));
           } else if (err) {
             res.status(500).end();
           } else {
@@ -77,8 +80,13 @@ class AuthProxy {
         })
         .put(bodyParser.json(), (req, res) => {
           let token = req.params.token;
+          let tokenPassword = req.headers[AUTH_PROXY_TOKEN_PASSWORD_HEADER];
+          if (!tokenPassword) {
+            res.status(400).send(`You must set the ${AUTH_PROXY_TOKEN_PASSWORD_HEADER} header`);
+            return;
+          }
           let credential = req.body;
-          this.credentialDatabase.set(token, credential, (err) => {
+          this.credentialDatabase.set(token, tokenPassword, credential, (err) => {
             if (err) {
               if (err.name === 'XError' && err.code === 'validation_error') {
                 res.status(400).send(JSON.stringify({message: err.message, data: err.data}));

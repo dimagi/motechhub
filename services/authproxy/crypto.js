@@ -35,14 +35,18 @@ class Crypto {
     }
   }
 
-  encrypt(text) {
-    this.assertSecret();
-    return CryptoJS.AES.encrypt(text, this.secret).toString();
+  combinedSecret(password) {
+    return `${this.secret}:${password}`;
   }
 
-  decrypt(text) {
+  encrypt(password, text) {
     this.assertSecret();
-    return CryptoJS.AES.decrypt(text, this.secret).toString(CryptoJS.enc.Utf8);
+    return CryptoJS.AES.encrypt(text, this.combinedSecret(password)).toString();
+  }
+
+  decrypt(password, text) {
+    this.assertSecret();
+    return CryptoJS.AES.decrypt(text, this.combinedSecret(password)).toString(CryptoJS.enc.Utf8);
   };
 }
 exports.Crypto = Crypto;

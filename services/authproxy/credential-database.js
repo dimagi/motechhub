@@ -41,7 +41,7 @@ class CredentialDatabase {
     return this.crypto.verifyHash(checksum);
   }
 
-  set(token, credentials, callback) {
+  set(token, tokenPassword, credentials, callback) {
     try {
       credentialSchema.validate(credentials);
     } catch (e) {
@@ -49,7 +49,7 @@ class CredentialDatabase {
       return;
     }
 
-    let encryptedCredentials = this.crypto.encrypt(JSON.stringify(credentials));
+    let encryptedCredentials = this.crypto.encrypt(tokenPassword, JSON.stringify(credentials));
     this.db.get(getDocId(token), (err, body) => {
       if (err && err.statusCode === 404) {
         body = {_id: getDocId(token)};
@@ -79,12 +79,12 @@ class CredentialDatabase {
     });
   }
 
-  get(token, callback) {
+  get(token, tokenPassword, callback) {
     this.db.get(getDocId(token), (err, body) => {
       if (!err) {
         let credentials;
         try {
-          credentials = JSON.parse(this.crypto.decrypt(body.credentials));
+          credentials = JSON.parse(this.crypto.decrypt(tokenPassword, body.credentials));
         } catch (e) {
           callback({"name": "Decryption Error", "message": "Could not retrieve the encrypted message"});
           return

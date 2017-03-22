@@ -7,7 +7,9 @@ let request = require('request');
 
 
 describe("Auth Proxy's ability to proxy", () => {
-  let authProxy, dummyServer, token, credentialDatabase;
+  let authProxy, dummyServer, token, tokenPassword, credentialDatabase;
+
+  tokenPassword = 'XYZ';
 
   beforeAll(() => {
     credentialDatabase = new CredentialDatabase({
@@ -21,7 +23,7 @@ describe("Auth Proxy's ability to proxy", () => {
   });
 
   beforeAll((done) => {
-    credentialDatabase.set(token, {
+    credentialDatabase.set(token, tokenPassword, {
       target: 'http://localhost:9000',
       auth: {
         method: 'basic',
@@ -39,7 +41,10 @@ describe("Auth Proxy's ability to proxy", () => {
   });
 
   it("lets you proxy GET using basic auth", (done) => {
-    request.get('http://localhost:8000/c7de095ee07e4e1be55594d6d2ba4676/hello', function(error, response, body) {
+    request.get({
+      url: 'http://localhost:8000/c7de095ee07e4e1be55594d6d2ba4676/hello',
+      headers: {'x-authproxy-token-password': tokenPassword},
+    }, function(error, response, body) {
       expect(JSON.parse(body)).toEqual({
         "url": "/hello",
         "headers": {
@@ -54,7 +59,10 @@ describe("Auth Proxy's ability to proxy", () => {
   });
 
   it("lets you proxy POST using basic auth", (done) => {
-    request.post('http://localhost:8000/c7de095ee07e4e1be55594d6d2ba4676/hello', function(error, response, body) {
+    request.post({
+      url: 'http://localhost:8000/c7de095ee07e4e1be55594d6d2ba4676/hello',
+      headers: {'x-authproxy-token-password': tokenPassword},
+    }, function(error, response, body) {
       expect(JSON.parse(body)).toEqual({
         "url": "/hello",
         "headers": {
@@ -73,6 +81,7 @@ describe("Auth Proxy's ability to proxy", () => {
 
 describe("Auth Proxy's credential storing API", () => {
   let authProxy, dummyServer, token, credentialDatabase;
+  let tokenPassword = 'XYZ';
 
   beforeAll(() => {
     credentialDatabase = new CredentialDatabase({
@@ -92,18 +101,26 @@ describe("Auth Proxy's credential storing API", () => {
   });
 
   it('lets you add a credential', (done) => {
-    request.put('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
+    request.put({
+      url: 'http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259',
+      json: {target: 'http://localhost:8000', auth: {method: 'none'}},
+      headers: {'x-authproxy-token-password': tokenPassword},
+    }, (error, response, body) => {
       expect(response.statusCode).toBe(200);
-      credentialDatabase.get(token, (err, credential) => {
+      credentialDatabase.get(token, tokenPassword, (err, credential) => {
         expect(err).toBeFalsy();
         expect(credential).toEqual({target: 'http://localhost:8000', auth: {method: 'none'}});
         done();
       });
-    }).json({target: 'http://localhost:8000', auth: {method: 'none'}});
+    });
   });
 
   it("doesn't let you add a malformed credential", (done) => {
-    request.put('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
+    request.put({
+      url: 'http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259',
+      json: {target: 'http://localhost:8000'},
+      headers: {'x-authproxy-token-password': tokenPassword},
+    }, (error, response, body) => {
       expect(response.statusCode).toBe(400);
       expect(body).toEqual({
         message: 'Field is required',
@@ -117,25 +134,29 @@ describe("Auth Proxy's credential storing API", () => {
           ]
         }
       });
-      credentialDatabase.get(token, (err, credential) => {
+      credentialDatabase.get(token, tokenPassword, (err, credential) => {
         expect(err).toBeFalsy();
         let whatItWasBefore = {target: 'http://localhost:8000', auth: {method: 'none'}};
         expect(credential).toEqual(whatItWasBefore);
         done();
       });
-    }).json({target: 'http://localhost:8000'});
+    });
   });
 
   it("doesn't let you add a malformed credential", (done) => {
-    request.put('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
+    request.put({
+      url: 'http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259',
+      headers: {'x-authproxy-token-password': tokenPassword},
+      json: {target: 'http://localhost:8000', auth: {method: 'illegal value'}}
+    }, (error, response, body) => {
       expect(response.statusCode).toBe(400);
-      credentialDatabase.get(token, (err, credential) => {
+      credentialDatabase.get(token, tokenPassword, (err, credential) => {
         expect(err).toBeFalsy();
         let whatItWasBefore = {target: 'http://localhost:8000', auth: {method: 'none'}};
         expect(credential).toEqual(whatItWasBefore);
         done();
       });
-    }).json({target: 'http://localhost:8000', auth: {method: 'illegal value'}});
+    });
   });
 
   it("will tell you when a credential does exist", (done) => {
@@ -146,7 +167,10 @@ describe("Auth Proxy's credential storing API", () => {
   });
 
   it("knows the difference credential API and proxying '/'", (done) => {
-    request.delete('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259/', (error, response, body) => {
+    request.delete({
+      url: 'http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259/',
+      headers: {'x-authproxy-token-password': tokenPassword},
+    }, (error, response, body) => {
       expect(response.statusCode).toBe(404);
       request.head('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
         expect(response.statusCode).toBe(200);
