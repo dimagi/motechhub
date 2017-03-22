@@ -3,6 +3,8 @@ var deasync = require('deasync');
 var read = deasync(require('read'));
 
 var CryptoJS = require("crypto-js");
+var bcrypt = require('bcrypt');
+
 
 let promptSecretKey = () => {
   return read({prompt: "Secret Key? ", silent: true});
@@ -16,6 +18,15 @@ class Crypto {
   promptSecret() {
     this.secret = promptSecretKey();
     return this;
+  }
+
+  generateHash() {
+    // this should take about 1.5 seconds
+    return bcrypt.hashSync(this.secret, 14);
+  }
+
+  verifyHash(hash) {
+    return bcrypt.compareSync(this.secret, hash);
   }
 
   assertSecret() {

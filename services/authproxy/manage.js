@@ -12,20 +12,29 @@ function runserver(localsettings) {
     crypto: new Crypto().promptSecret(),
   });
 
-  new AuthProxy({
-    credentialDatabase,
-    ssl: {
-      key: fs.readFileSync('localhost.key', 'utf8'),
-      cert: fs.readFileSync('localhost.cert', 'utf8')
-    }
-  }).listen();
+  let verified = credentialDatabase.checkChecksum();
+
+  if (verified) {
+    new AuthProxy({
+      credentialDatabase,
+      ssl: {
+        key: fs.readFileSync('localhost.key', 'utf8'),
+        cert: fs.readFileSync('localhost.cert', 'utf8')
+      }
+    }).listen();
+  } else {
+    console.log('There was a problem with your password');
+    process.exit(1);
+  }
+
+
 }
 
 function syncdb(localsettings) {
   let credentialDatabase = new CredentialDatabase({
     dbUri: localsettings.COUCHDB.uri,
     dbName: localsettings.COUCHDB.dbName,
-    crypto: null,
+    crypto: new Crypto().promptSecret(),
   });
   credentialDatabase.init();
 }

@@ -1,5 +1,6 @@
 let nano = require('nano');
 let credentialSchema = require('./credential.js').credentialSchema;
+let deasync = require('deasync');
 
 function getDocId(token) {
   return `Token:${token}`;
@@ -15,8 +16,29 @@ class CredentialDatabase {
   }
 
   init() {
-    this.couch.db.create(this.dbName);
+    try {
+      deasync(this.couch.db.create)(this.dbName);
+    } catch (e) {
+      if (e.statusCode === 412 && e.error === 'file_exists') {
+
+      } else {
+        throw e;
+      }
+    }
     console.log(`Created db ${this.dbName}`);
+    let checksum = this.crypto.generateHash();
+    try {
+      deasync(this.db.insert)({_id: 'Checksum', checksum: checksum});
+    } catch (e) {
+      if (e.statusCode !== 409) {
+        throw e;
+      }
+    }
+  }
+
+  checkChecksum() {
+    let checksum = deasync(this.db.get)('Checksum').checksum;
+    return this.crypto.verifyHash(checksum);
   }
 
   set(token, credentials, callback) {
