@@ -102,6 +102,42 @@ describe("Auth Proxy's credential storing API", () => {
     }).json({target: 'http://localhost:8000', auth: {method: 'none'}});
   });
 
+  it("doesn't let you add a malformed credential", (done) => {
+    request.put('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
+      expect(response.statusCode).toBe(400);
+      expect(body).toEqual({
+        message: 'Field is required',
+        data: {
+          fieldErrors: [
+            {
+              field: 'auth',
+              code: 'required',
+              message: 'Field is required'
+            }
+          ]
+        }
+      });
+      credentialDatabase.get(token, (err, credential) => {
+        expect(err).toBeFalsy();
+        let whatItWasBefore = {target: 'http://localhost:8000', auth: {method: 'none'}};
+        expect(credential).toEqual(whatItWasBefore);
+        done();
+      });
+    }).json({target: 'http://localhost:8000'});
+  });
+
+  it("doesn't let you add a malformed credential", (done) => {
+    request.put('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
+      expect(response.statusCode).toBe(400);
+      credentialDatabase.get(token, (err, credential) => {
+        expect(err).toBeFalsy();
+        let whatItWasBefore = {target: 'http://localhost:8000', auth: {method: 'none'}};
+        expect(credential).toEqual(whatItWasBefore);
+        done();
+      });
+    }).json({target: 'http://localhost:8000', auth: {method: 'illegal value'}});
+  });
+
   it("will tell you when a credential does exist", (done) => {
     request.head('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
       expect(response.statusCode).toBe(200);

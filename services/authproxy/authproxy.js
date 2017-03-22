@@ -78,11 +78,16 @@ class AuthProxy {
         .put(bodyParser.json(), (req, res) => {
           let token = req.params.token;
           let credential = req.body;
-          if (!credential.target) {
-            res.status(400).send("Your credential must contain a 'target' property").end();
-          }
           this.credentialDatabase.set(token, credential, (err) => {
-            res.status(err ? 500 : 200).end();
+            if (err) {
+              if (err.name === 'XError' && err.code === 'validation_error') {
+                res.status(400).send(JSON.stringify({message: err.message, data: err.data}));
+              } else {
+                res.status(500).end();
+              }
+            } else {
+              res.status(200).end();
+            }
           });
         })
         .delete((req, res) => {

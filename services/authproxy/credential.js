@@ -5,7 +5,7 @@ function matchStringValue(requiredValue) {
     type: String,
     validate: (value) => {
       if (value !== requiredValue) {
-        throw new commonSchema.FieldError('invalid', 'First character must be x');
+        throw new commonSchema.FieldError('invalid', `Value must be '${requiredValue}'`);
       }
     }
   };
