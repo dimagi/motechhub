@@ -36,7 +36,7 @@ describe("Credential Database", () => {
   });
 
   it("stores the credential encrypted in the database", (done) => {
-    credentialDatabase.db.get(token, (err, body) => {
+    credentialDatabase.db.get(`Token:${token}`, (err, body) => {
       expect(err).toBeFalsy();
       // AES output always starts with 'Salted__' in base64, or 'U2FsdGVkX1'
       expect(body.credentials.slice(0, 10)).toEqual('U2FsdGVkX1');

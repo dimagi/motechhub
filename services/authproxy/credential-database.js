@@ -1,6 +1,10 @@
 let nano = require('nano');
 let credentialSchema = require('./credential.js').credentialSchema;
 
+function getDocId(token) {
+  return `Token:${token}`;
+}
+
 class CredentialDatabase {
   constructor({dbUri, dbName, crypto}) {
     this.dbUri = dbUri;
@@ -24,9 +28,9 @@ class CredentialDatabase {
     }
 
     let encryptedCredentials = this.crypto.encrypt(JSON.stringify(credentials));
-    this.db.get(token, (err, body) => {
+    this.db.get(getDocId(token), (err, body) => {
       if (err && err.statusCode === 404) {
-        body = {_id: token};
+        body = {_id: getDocId(token)};
       } else if (err) {
         callback(err);
         return;
@@ -39,7 +43,7 @@ class CredentialDatabase {
   }
 
   clear(token, callback) {
-    this.db.get(token, (err, body) => {
+    this.db.get(getDocId(token), (err, body) => {
       if (err && err.statusCode === 404) {
         // already doesn't exist? no problem!
         callback();
@@ -54,7 +58,7 @@ class CredentialDatabase {
   }
 
   get(token, callback) {
-    this.db.get(token, (err, body) => {
+    this.db.get(getDocId(token), (err, body) => {
       if (!err) {
         let credentials;
         try {
@@ -71,7 +75,7 @@ class CredentialDatabase {
   }
 
   has(token, callback) {
-    this.db.head(token, (err, body) => {
+    this.db.head(getDocId(token), (err, body) => {
       if (!err) {
         callback(undefined, true);
       } else if (err.statusCode === 404) {
