@@ -106,7 +106,7 @@ describe("Auth Proxy's credential storing API", () => {
       json: {target: 'http://localhost:8000', auth: {method: 'none'}},
       headers: {'x-authproxy-token-password': tokenPassword},
     }, (error, response, body) => {
-      expect(response.statusCode).toBe(200);
+      expect(response.statusCode).toBe(201);
       credentialDatabase.get(token, tokenPassword, (err, credential) => {
         expect(err).toBeFalsy();
         expect(credential).toEqual({target: 'http://localhost:8000', auth: {method: 'none'}});

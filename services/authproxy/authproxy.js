@@ -94,7 +94,7 @@ class AuthProxy {
                 res.status(500).end();
               }
             } else {
-              res.status(200).end();
+              res.status(201).end();
             }
           });
         })
