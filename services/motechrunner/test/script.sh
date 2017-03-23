@@ -2,4 +2,4 @@
 set -e
 
 ./manage.py test
-jasmine-node spec/
+./node_modules/.bin/jasmine-node spec/
