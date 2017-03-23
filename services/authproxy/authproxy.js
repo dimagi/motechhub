@@ -91,6 +91,7 @@ class AuthProxy {
               if (err.name === 'XError' && err.code === 'validation_error') {
                 res.status(400).send(JSON.stringify({message: err.message, data: err.data}));
               } else {
+                console.log(err);
                 res.status(500).end();
               }
             } else {
