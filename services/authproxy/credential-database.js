@@ -34,6 +34,7 @@ class CredentialDatabase {
         throw e;
       }
     }
+    return this;
   }
 
   checkChecksum() {
