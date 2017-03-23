@@ -6,7 +6,7 @@ var http = require('http'),
     bodyParser = require('body-parser'),
     fs = require('fs');
 
-let AUTH_PROXY_TOKEN_PASSWORD_HEADER = 'x-authproxy-token-password';
+const AUTH_PROXY_TOKEN_PASSWORD_HEADER = 'x-authproxy-token-password';
 
 class AuthProxy {
   constructor({credentialDatabase, ssl = null}) {
