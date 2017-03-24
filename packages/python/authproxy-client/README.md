@@ -69,6 +69,6 @@ if response.status_code == 200:
 Note that since authproxy already stores the destination
 and authentication keys associated with a token
 (encrypted with a combination of an in-memory key
-and the token password that authproxy_client automatically provides on each request),
+and the token password that `authproxy_client` automatically provides on each request),
 you should specify just the path component of the uri,
 beginning with a slash.
