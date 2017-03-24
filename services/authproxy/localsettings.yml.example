@@ -1,0 +1,7 @@
+COUCHDB:
+    uri: 'http://localhost:5984'
+    dbName: 'authproxy'
+
+SSL:
+    keyFile: 'localhost.key'
+    certFile: 'localhost.cert'
