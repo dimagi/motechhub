@@ -1,6 +1,5 @@
 from unittest2 import TestCase
-from authproxy_client.client import AuthProxyClient
-from authproxy_client.credential_schema import BasicAuth
+from authproxy_client import AuthProxyClient, BasicAuth
 
 
 class AuthProxyClientTest(TestCase):
