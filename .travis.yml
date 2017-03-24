@@ -9,7 +9,7 @@ before_install:
   # for PR builds, TRAVIS_BRANCH is the merge base (e.g. master)
   # https://graysonkoonce.com/getting-the-current-branch-name-during-a-pull-request-in-travis-ci/
   - git fetch origin $TRAVIS_BRANCH
-  - '[ "$(git diff --stat refs/remotes/origin/$TRAVIS_BRANCH -- $MODULE)" != "" ] || exit 0'
+  - '[ "$(git diff --stat FETCH_HEAD -- $MODULE)" != "" ] || exit 0'
   - '[ "$NODE" == "" ] || . $HOME/.nvm/nvm.sh'
   - '[ "$NODE" == "" ] || nvm install stable'
   - '[ "$NODE" == "" ] || nvm use stable'
