@@ -8,7 +8,8 @@ before_install:
   # skip job if the module hasn't been changed since the merge base (e.g. master)
   # for PR builds, TRAVIS_BRANCH is the merge base (e.g. master)
   # https://graysonkoonce.com/getting-the-current-branch-name-during-a-pull-request-in-travis-ci/
-  - '[ "$(git diff --stat $TRAVIS_BRANCH -- $MODULE)" != "" ] || exit 0'
+  - git fetch origin $TRAVIS_BRANCH
+  - '[ "$(git diff --stat origin/$TRAVIS_BRANCH -- $MODULE)" != "" ] || exit 0'
   - '[ "$NODE" == "" ] || . $HOME/.nvm/nvm.sh'
   - '[ "$NODE" == "" ] || nvm install stable'
   - '[ "$NODE" == "" ] || nvm use stable'
