@@ -5,20 +5,24 @@ env:
     - MODULE=services/authproxy CXX=g++-4.8 NODE=1
     - MODULE=packages/python/authproxy-client CXX=g++-4.8 NODE=1
 before_install:
-  - '[ "$NODE" != "" ] && . $HOME/.nvm/nvm.sh'
-  - '[ "$NODE" != "" ] && nvm install stable'
-  - '[ "$NODE" != "" ] && nvm use stable'
+  # set SKIP_JOB=1 if the module hasn't been changed since master
+  # for PR builds, TRAVIS_BRANCH is the merge base (e.g. master)
+  # https://graysonkoonce.com/getting-the-current-branch-name-during-a-pull-request-in-travis-ci/
+  - '[ "$(git diff --stat $TRAVIS_BRANCH -- $MODULE)" != "" ] || export SKIP_JOB=1'
+  - '[ "$SKIP_JOB" == "" ] || exit 0 ; [ "$NODE" == "" ] || . $HOME/.nvm/nvm.sh'
+  - '[ "$SKIP_JOB" == "" ] || exit 0 ; [ "$NODE" == "" ] || nvm install stable'
+  - '[ "$SKIP_JOB" == "" ] || exit 0 ; [ "$NODE" == "" ] || nvm use stable'
   # See https://github.com/travis-ci/travis-ci/issues/538
-  - '[ "$CXX" != "" ] && sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y'
-  - '[ "$CXX" != "" ] && sudo apt-get update -qq'
-  - '[ "$CXX" != "" ] && sudo apt-get install -qq $CXX'
+  - '[ "$SKIP_JOB" == "" ] || exit 0 ; [ "$CXX" == "" ] || sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y'
+  - '[ "$SKIP_JOB" == "" ] || exit 0 ; [ "$CXX" == "" ] || sudo apt-get update -qq'
+  - '[ "$SKIP_JOB" == "" ] || exit 0 ; [ "$CXX" == "" ] || sudo apt-get install -qq $CXX'
 install:
-  - bash -c "cd $MODULE; ./travis/install.sh"
+  - '[ "$SKIP_JOB" == "" ] || exit 0 ; bash -c "cd $MODULE; ./travis/install.sh"'
 before_script:
-  - bash -c "cd $MODULE; ./travis/before_script.sh"
+  - '[ "$SKIP_JOB" == "" ] || exit 0 ; bash -c "cd $MODULE; ./travis/before_script.sh"'
 script:
-  - bash -c "cd $MODULE; ./travis/script.sh"
+  - '[ "$SKIP_JOB" == "" ] || exit 0 ; bash -c "cd $MODULE; ./travis/script.sh"'
 after_script:
-  - bash -c "cd $MODULE; ./travis/after_script.sh"
+  - '[ "$SKIP_JOB" == "" ] || exit 0 ; bash -c "cd $MODULE; ./travis/after_script.sh"'
 services:
   - couchdb
