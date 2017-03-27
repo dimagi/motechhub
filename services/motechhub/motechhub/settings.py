@@ -48,6 +48,7 @@ INSTALLED_APPS += [
     'commcarehq',
     'openmrs',
     'prototype',
+    'connected_accounts.apps.ConnectedAccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(os.path.dirname(os.path.dirname(__file__)), 'bower_components'),
 )
+
+
+AUTHPROXY_URL = localsettings['AUTHPROXY_URL']
+AUTHPROXY_CERT = localsettings['AUTHPROXY_CERT']

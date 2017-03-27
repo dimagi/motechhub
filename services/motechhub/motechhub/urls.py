@@ -20,6 +20,7 @@ domain_urlspatterns = [
     url(r'^openmrs/', include('openmrs.urls')),
     url(r'^commcarehq/', include('commcarehq.urls')),
     url(r'^prototype/', include('prototype.urls')),
+    url(r'^accounts/', include('connected_accounts.urls')),
 ]
 
 urlpatterns = [

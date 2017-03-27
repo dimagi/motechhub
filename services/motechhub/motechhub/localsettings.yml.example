@@ -6,3 +6,6 @@ DATABASES:
         PASSWORD: 'motechhub'
         HOST: '127.0.0.1'
         PORT: '5432'
+
+AUTHPROXY_URL: 'https://localhost:7002'
+AUTHPROXY_CERT: ../../services/authproxy/localhost.cert
