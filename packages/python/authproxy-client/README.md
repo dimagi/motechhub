@@ -60,7 +60,7 @@ To make requests proxied through authproxy for a particular token, you ask for a
 ```python
 requests = self.authproxy_client.requests(self.token)
 
-response = requests.get('/hello/world', auth=('admin', '123'))
+response = requests.get('/hello/world')
 
 if response.status_code == 200:
     result = response.json()
