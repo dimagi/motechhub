@@ -2,23 +2,28 @@ sudo: true
 language: python
 env:
   matrix:
-    - SERVICE=authproxy CXX=g++-4.8 CC=gcc-4.8
+    - MODULE=services/authproxy CXX=g++-4.8 NODE=1
+    - MODULE=packages/python/authproxy-client CXX=g++-4.8 NODE=1
 before_install:
-  - . $HOME/.nvm/nvm.sh
-  - nvm install stable
-  - nvm use stable
+  # skip job if the module hasn't been changed since the merge base (e.g. master)
+  # for PR builds, TRAVIS_BRANCH is the merge base (e.g. master)
+  # https://graysonkoonce.com/getting-the-current-branch-name-during-a-pull-request-in-travis-ci/
+  - git fetch origin $TRAVIS_BRANCH
+  - '[ "$(git diff --stat FETCH_HEAD -- $MODULE)" != "" ] || exit 0'
+  - '[ "$NODE" == "" ] || . $HOME/.nvm/nvm.sh'
+  - '[ "$NODE" == "" ] || nvm install stable'
+  - '[ "$NODE" == "" ] || nvm use stable'
   # See https://github.com/travis-ci/travis-ci/issues/538
-  - '[ "$CXX" != "" ] && sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y'
-  - '[ "$CXX" != "" ] && sudo apt-get update -qq'
-  - '[ "$CXX" != "" ] && sudo apt-get install -qq $CXX'
+  - '[ "$CXX" == "" ] || sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y'
+  - '[ "$CXX" == "" ] || sudo apt-get update -qq'
+  - '[ "$CXX" == "" ] || sudo apt-get install -qq $CXX'
 install:
-  - bash -c "cd services/$SERVICE; ./test/install.sh"
+  - 'bash -c "cd $MODULE; ./travis/install.sh"'
 before_script:
-  - bash -c "cd services/$SERVICE; cp localsettings.yml.example localsettings.yml"
-  - bash -c "cd services/$SERVICE; ./test/before_script.sh"
+  - 'bash -c "cd $MODULE; ./travis/before_script.sh"'
 script:
-  - bash -c "cd services/$SERVICE; ./test/script.sh"
+  - 'bash -c "cd $MODULE; ./travis/script.sh"'
 after_script:
-  - bash -c "cd services/$SERVICE; ./test/after_script.sh"
+  - 'bash -c "cd $MODULE; ./travis/after_script.sh"'
 services:
   - couchdb
