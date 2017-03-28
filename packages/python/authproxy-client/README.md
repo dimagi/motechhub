@@ -27,7 +27,7 @@ a token password given the token. This will typically be stored in a database.
 ## Configure
 
 ```python
-authproxy_client = AuthProxyClient(server_url='http://localhost:8000', get_password=get_token_password)
+authproxy_client = AuthProxyClient(server_url='http://localhost:7002', get_password=get_token_password)
 ```
 
 

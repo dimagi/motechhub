@@ -42,7 +42,7 @@ describe("Auth Proxy's ability to proxy", () => {
 
   it("lets you proxy GET using basic auth", (done) => {
     request.get({
-      url: 'http://localhost:8000/c7de095ee07e4e1be55594d6d2ba4676/hello',
+      url: 'http://localhost:7002/c7de095ee07e4e1be55594d6d2ba4676/hello',
       headers: {'x-authproxy-token-password': tokenPassword},
     }, function(error, response, body) {
       expect(JSON.parse(body)).toEqual({
@@ -60,7 +60,7 @@ describe("Auth Proxy's ability to proxy", () => {
 
   it("lets you proxy POST using basic auth", (done) => {
     request.post({
-      url: 'http://localhost:8000/c7de095ee07e4e1be55594d6d2ba4676/hello',
+      url: 'http://localhost:7002/c7de095ee07e4e1be55594d6d2ba4676/hello',
       headers: {'x-authproxy-token-password': tokenPassword},
     }, function(error, response, body) {
       expect(JSON.parse(body)).toEqual({
@@ -94,7 +94,7 @@ describe("Auth Proxy's credential storing API", () => {
   });
 
   it("will tell you when a credential does not exist", (done) => {
-    request.head('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
+    request.head('http://localhost:7002/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
       expect(response.statusCode).toBe(404);
       done();
     });
@@ -102,14 +102,14 @@ describe("Auth Proxy's credential storing API", () => {
 
   it('lets you add a credential', (done) => {
     request.put({
-      url: 'http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259',
-      json: {target: 'http://localhost:8000', auth: {method: 'none'}},
+      url: 'http://localhost:7002/4dfdd3ab2d5a6be04b498dd27cba5259',
+      json: {target: 'http://localhost:7002', auth: {method: 'none'}},
       headers: {'x-authproxy-token-password': tokenPassword},
     }, (error, response, body) => {
       expect(response.statusCode).toBe(201);
       credentialDatabase.get(token, tokenPassword, (err, credential) => {
         expect(err).toBeFalsy();
-        expect(credential).toEqual({target: 'http://localhost:8000', auth: {method: 'none'}});
+        expect(credential).toEqual({target: 'http://localhost:7002', auth: {method: 'none'}});
         done();
       });
     });
@@ -117,8 +117,8 @@ describe("Auth Proxy's credential storing API", () => {
 
   it("doesn't let you add a malformed credential", (done) => {
     request.put({
-      url: 'http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259',
-      json: {target: 'http://localhost:8000'},
+      url: 'http://localhost:7002/4dfdd3ab2d5a6be04b498dd27cba5259',
+      json: {target: 'http://localhost:7002'},
       headers: {'x-authproxy-token-password': tokenPassword},
     }, (error, response, body) => {
       expect(response.statusCode).toBe(400);
@@ -136,7 +136,7 @@ describe("Auth Proxy's credential storing API", () => {
       });
       credentialDatabase.get(token, tokenPassword, (err, credential) => {
         expect(err).toBeFalsy();
-        let whatItWasBefore = {target: 'http://localhost:8000', auth: {method: 'none'}};
+        let whatItWasBefore = {target: 'http://localhost:7002', auth: {method: 'none'}};
         expect(credential).toEqual(whatItWasBefore);
         done();
       });
@@ -145,14 +145,14 @@ describe("Auth Proxy's credential storing API", () => {
 
   it("doesn't let you add a malformed credential", (done) => {
     request.put({
-      url: 'http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259',
+      url: 'http://localhost:7002/4dfdd3ab2d5a6be04b498dd27cba5259',
       headers: {'x-authproxy-token-password': tokenPassword},
-      json: {target: 'http://localhost:8000', auth: {method: 'illegal value'}}
+      json: {target: 'http://localhost:7002', auth: {method: 'illegal value'}}
     }, (error, response, body) => {
       expect(response.statusCode).toBe(400);
       credentialDatabase.get(token, tokenPassword, (err, credential) => {
         expect(err).toBeFalsy();
-        let whatItWasBefore = {target: 'http://localhost:8000', auth: {method: 'none'}};
+        let whatItWasBefore = {target: 'http://localhost:7002', auth: {method: 'none'}};
         expect(credential).toEqual(whatItWasBefore);
         done();
       });
@@ -160,7 +160,7 @@ describe("Auth Proxy's credential storing API", () => {
   });
 
   it("will tell you when a credential does exist", (done) => {
-    request.head('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
+    request.head('http://localhost:7002/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
       expect(response.statusCode).toBe(200);
       done();
     });
@@ -168,11 +168,11 @@ describe("Auth Proxy's credential storing API", () => {
 
   it("knows the difference credential API and proxying '/'", (done) => {
     request.delete({
-      url: 'http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259/',
+      url: 'http://localhost:7002/4dfdd3ab2d5a6be04b498dd27cba5259/',
       headers: {'x-authproxy-token-password': tokenPassword},
     }, (error, response, body) => {
       expect(response.statusCode).toBe(404);
-      request.head('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
+      request.head('http://localhost:7002/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
         expect(response.statusCode).toBe(200);
         done();
       });
@@ -180,9 +180,9 @@ describe("Auth Proxy's credential storing API", () => {
   });
 
   it("lets you delete a credential", (done) => {
-    request.delete('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
+    request.delete('http://localhost:7002/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
       expect(response.statusCode).toBe(200);
-      request.head('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
+      request.head('http://localhost:7002/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
         expect(response.statusCode).toBe(404);
         done();
       });
@@ -190,7 +190,7 @@ describe("Auth Proxy's credential storing API", () => {
   });
 
   afterAll((done) => {
-    request.delete('http://localhost:8000/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
+    request.delete('http://localhost:7002/4dfdd3ab2d5a6be04b498dd27cba5259', (error, response, body) => {
       done();
     });
   });

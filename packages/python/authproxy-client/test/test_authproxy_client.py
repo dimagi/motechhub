@@ -9,7 +9,7 @@ class AuthProxyClientTest(TestCase):
     def setUpClass(cls):
 
         cls.authproxy_client = AuthProxyClient(
-            server_url='http://localhost:8000', get_password=lambda token: '******')
+            server_url='http://localhost:7002', get_password=lambda token: '******')
         cls.authproxy_client.create_or_update_credential(
             cls.token, 'http://localhost:9000', auth=BasicAuth(
                 username='admin',

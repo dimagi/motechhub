@@ -9,12 +9,13 @@ var http = require('http'),
 const AUTH_PROXY_TOKEN_PASSWORD_HEADER = 'x-authproxy-token-password';
 
 class AuthProxy {
-  constructor({credentialDatabase, ssl = null}) {
+  constructor({credentialDatabase, ssl = null, port = 7002}) {
     this.credentialDatabase = credentialDatabase;
     this._proxy = null;
     this.server = null;
     this._app = null;
     this.ssl = ssl;
+    this.port = port
   }
 
   get proxy() {
@@ -111,11 +112,11 @@ class AuthProxy {
   }
 
   listen() {
-    console.log('listening on port 8000');
+    console.log(`listening on port ${this.port}`);
     if (this.ssl) {
-      this.server = https.createServer(this.ssl, this.app).listen(8000);
+      this.server = https.createServer(this.ssl, this.app).listen(this.port);
     } else {
-      this.server = http.createServer(this.app).listen(8000);
+      this.server = http.createServer(this.app).listen(this.port);
     }
     return this;
   }
