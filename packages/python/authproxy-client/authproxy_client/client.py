@@ -15,6 +15,7 @@ class AuthProxyHTTPException(Exception):
 
     __str__ = __unicode__
 
+
 class AuthProxyClient(object):
 
     class ServerRouter(object):
@@ -29,22 +30,27 @@ class AuthProxyClient(object):
                 raise ValueError('Path must include leading slash: {!r}'.format(path))
             return self.url + '/{}{}'.format(token, path)
 
-    def __init__(self, server_url, get_password):
+    def __init__(self, server_url, get_password, cert_file=None):
         """
         :param server_url: url for the AuthProxy server
         :param get_password: function that retrieves password given a token
         """
         self.router = self.ServerRouter(server_url)
         self.get_password = get_password
+        self.verify = cert_file if cert_file else True
 
     def create_or_update_credential(self, token, target, auth=None):
         credential = Credential(target=target, auth=auth or NoneAuth())
 
         token_password = self.get_password(token)
 
-        response = requests.put(self.router.token_url(token), json=credential.to_json(), headers={
-            AUTH_PROXY_TOKEN_PASSWORD_HEADER: base64.b64encode(token_password)
-        })
+        response = requests.put(
+            self.router.token_url(token),
+            json=credential.to_json(), headers={
+                AUTH_PROXY_TOKEN_PASSWORD_HEADER: base64.b64encode(token_password),
+            },
+            verify=self.verify,
+        )
 
         if response.status_code != 201:
             raise AuthProxyHTTPException(response)
@@ -84,6 +90,7 @@ class ProxyingRequests(object):
         headers = {header: value for header, value in kwargs.get('headers', {}).items()}
         headers[AUTH_PROXY_TOKEN_PASSWORD_HEADER] = base64.b64encode(self.token_password)
         kwargs['headers'] = headers
+        kwargs['verify'] = self.authproxy_client.verify
         return request_function(self.get_url(path), *args, **kwargs)
 
     def request(self, *args, **kwargs):
