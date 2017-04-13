@@ -60,11 +60,11 @@ class AuthProxy {
         let tokenPassword = req.headers[AUTH_PROXY_TOKEN_PASSWORD_HEADER];
         this.credentialDatabase.get(token, tokenPassword, (err, endpoint) => {
           if (err && err.statusCode === 404) {
-            res.status(404).end();
+            res.status(404).send(JSON.stringify({message: 'The token does not exist'}));
           } else if (err && err.name == "Decryption Error") {
             res.status(401).send(JSON.stringify({message: `The ${AUTH_PROXY_TOKEN_PASSWORD_HEADER} header was incorrect`}));
           } else if (err) {
-            res.status(500).end();
+            res.status(500).send(JSON.stringify({message: 'There was an unexpected error fetching credentials'}));
           } else {
             this.proxy.web(req, res, {target: endpoint.target, secure: false, _endpoint: endpoint});
           }
